@@ -12,6 +12,18 @@ int is_empty(const char *s) {
   return 1;
 }
 
+void remove_char(char *s, char c) {
+  int writer = 0, reader = 0;
+
+  while (s[reader]) {
+    if (s[reader]!=c) {
+      s[writer++] = s[reader];
+    }
+    reader++;
+  }
+  s[writer]=0;
+}
+
 /* throw away line if it
  * - is empty
  * - exactly starts with comment char '%'
@@ -29,6 +41,7 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
 
   while (fgets(line, sizeof line, handle_in)) {
     if (line[0] != '%' && !is_empty(line)) {
+      remove_char(line, '\'');
       fputs(line, handle_out);
     }
   }

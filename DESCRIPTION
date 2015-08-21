@@ -11,7 +11,8 @@ Roxygen: list(wrap = FALSE)
 Imports:
     BBmisc,
     checkmate,
-    data.table
+    data.table,
+    stringr
 Suggests:
     testthat
 LazyData: yes
