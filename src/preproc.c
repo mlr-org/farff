@@ -35,6 +35,19 @@ void convert_quotes(char *s) {
   s[i] = 0;
 }
 
+void convert_na(char *s, char *t) {
+  int i = 0, j = 0;
+
+  do {
+    if (s[i] == '?') {
+      t[j++] = 'N'; t[j++] = 'A';
+      i++;
+    } else {
+      t[j++] = s[i++];
+    }
+  } while(s[i-1]);
+}
+
 char* trim_whitespace(char *str) {
   char *end;
 
@@ -65,23 +78,27 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
   FILE* handle_out;
   const char* path_in = CHAR(asChar(s_path_in));
   const char* path_out = CHAR(asChar(s_path_out));
-  char line[50000];
-  char* line2;
-  int ws_remove_enabled = 0;
+  char line_buf_1[50000];
+  char line_buf_2[50000];
+  char* line_p;
+  int data_sect_reached = 0;
 
   handle_in = fopen(path_in, "r");
   handle_out = fopen(path_out, "w");
 
-  while (fgets(line, sizeof line, handle_in)) {
-    line2 = trim_whitespace(line);
-    if (strcmp(line2, "@data\n") == 0 || strcmp(line2, "@DATA\n") == 0)
-      ws_remove_enabled = 1;
-    if (ws_remove_enabled)
-      remove_char(line2, ' ');
-    /* line2 = line; */
-    if (line2[0] != '%' && !is_empty(line2)) {
-      convert_quotes(line2);
-      fputs(line2, handle_out);
+  while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
+    line_p = trim_whitespace(line_buf_1);
+    if (strcmp(line_p, "@data\n") == 0 || strcmp(line_p, "@DATA\n") == 0)
+      data_sect_reached = 1;
+    if (data_sect_reached) {
+      remove_char(line_p, ' ');
+      convert_na(line_p, line_buf_2);
+      line_p = line_buf_2;
+    }
+    /* line_p = line; */
+    if (line_p[0] != '%' && !is_empty(line_p)) {
+      convert_quotes(line_p);
+      fputs(line_p, handle_out);
     }
   }
   fclose(handle_in);
