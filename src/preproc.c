@@ -67,12 +67,17 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
   const char* path_out = CHAR(asChar(s_path_out));
   char line[50000];
   char* line2;
+  int ws_remove_enabled = 0;
 
   handle_in = fopen(path_in, "r");
   handle_out = fopen(path_out, "w");
 
   while (fgets(line, sizeof line, handle_in)) {
     line2 = trim_whitespace(line);
+    if (strcmp(line2, "@data\n") == 0 || strcmp(line2, "@DATA\n") == 0)
+      ws_remove_enabled = 1;
+    if (ws_remove_enabled)
+      remove_char(line2, ' ');
     /* line2 = line; */
     if (line2[0] != '%' && !is_empty(line2)) {
       convert_quotes(line2);
