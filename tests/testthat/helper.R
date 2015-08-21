@@ -1,5 +1,5 @@
 library(checkmate)
-INST_DIR = file.path("..", "..", "inst", "arffs")
+INST_ARFF_DIR = file.path("..", "..", "inst", "arffs")
 
 compareRWeka = function(dir, path) {
   path2 = file.path(dir, path)

@@ -118,27 +118,3 @@ readForeign = function(file) {
   # data
 }
 
-preproc = function(path) {
-  out = tempfile()
-  # FIXME:
-  out = "bla.arff"
-
-  # # delete % comments lines,. FIXME: delete all AFTER comments
-  # cmd = sprintf("sed /^%%/d %s > %s", path, out)
-  # # print(cmd)
-  # system(cmd)
-
-  # # delete whitespace lines
-  # cmd = sprintf("sed -i /^\\s*$/d %s", out)
-  # # print(cmd)
-  # system(cmd)
-
-  return(path)
-}
-
-
-scanLines = function(path) {
-  s = readLines(path)
-  j.data = which(grepl("@DATA", s))
-  list(j.data = j.data)
-}
