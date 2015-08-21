@@ -96,12 +96,13 @@ readForeign = function(file) {
       } else if (type == "string") {
         col_types = c(col_types, "character")
         col_dfmts <- c(col_dfmts, NA)
-      } else if (type == "real") {
+      } else if (type %in% c("real", "numeric")) {
         col_types = c(col_types, "numeric")
         col_dfmts <- c(col_dfmts, NA)
       } else {
         stopf("Invalid type found on line %i: %s", line.counter, type)
       }
+      # FIXME: handle integer! ARFF def says its numeric, but we want to map it to R integer?
     }
     line <- readLines(file, n = 1L)
     line.counter = line.counter + 1L
