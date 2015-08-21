@@ -7,7 +7,7 @@
 #'   Path to ARFF file with read access.
 #' @return [\code{data.frame}].
 #' @export
-#' @useDynLib arff c_preproc
+#' @useDynLib farff c_preproc
 
 readARFF = function(path, show.info = TRUE) {
   assertFile(path, access = "r")
@@ -33,7 +33,7 @@ readARFF = function(path, show.info = TRUE) {
 
   # print(header)
   st3 = g({
-    dat = fread(path.out, header = FALSE, data.table = FALSE, skip = header$line.counter + 1L,
+    dat = fread(path.out, header = FALSE, data.table = FALSE, skip = header$line.counter,
       na.string = "?")
   })
   colnames(dat) = header$colnames
@@ -68,7 +68,7 @@ readForeign = function(file) {
   col_types <- NULL
   col_dfmts <- character()
   line <- readLines(file, n = 1L)
-  line.counter = 0L
+  line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
     # print(line.counter)
     # print(line)
@@ -80,19 +80,27 @@ readForeign = function(file) {
       if (length(line) < 3L)
         stop("Invalid attribute specification.")
       col_names <- c(col_names, line[2L])
-      if ((type <- tolower(line[3L])) == "date") {
+
+      type = tolower(line[3L])
+
+      if (type == "date") {
         col_types <- c(col_types, "character")
         col_dfmts <- c(col_dfmts, if (length(line) >
             3L) ISO_8601_to_POSIX_datetime_format(line[4L]) else "%Y-%m-%d %H:%M:%S")
-      }
-      else if (type == "relational")
+      } else if (type == "relational") {
         stop("Type 'relational' currently not implemented.")
-      else {
-        type <- sub("\\{.*", "factor", type)
-        type <- sub("string", "character", type)
-        type <- sub("real", "numeric", type)
-        col_types <- c(col_types, type)
+      } else if (grepl("\\{.*", type)) {
+        # if we see "{*", then it is a factor, as {} contains the levels
+        col_types = c(col_types, "factor")
         col_dfmts <- c(col_dfmts, NA)
+      } else if (type == "string") {
+        col_types = c(col_types, "character")
+        col_dfmts <- c(col_dfmts, NA)
+      } else if (type == "real") {
+        col_types = c(col_types, "numeric")
+        col_dfmts <- c(col_dfmts, NA)
+      } else {
+        stopf("Invalid type found on line %i: %s", line.counter, type)
       }
     }
     line <- readLines(file, n = 1L)
@@ -102,9 +110,6 @@ readForeign = function(file) {
     stop("Missing data section.")
   if (is.null(col_names))
     stop("Missing attribute section.")
-  if (length(col_names) != length(grep("factor|numeric|character",
-        col_types)))
-    stop("Invalid type specification.")
   list(colnames = col_names, coltypes = col_types, line.counter = line.counter)
 
   # data <- read.table(file, sep = ",", na.strings = "?", colClasses = col_types,
