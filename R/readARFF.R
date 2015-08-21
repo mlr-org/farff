@@ -107,13 +107,14 @@ readHeader = function(path) {
         ctype = "character"
       } else if (scanned.type.ci %in% c("real", "numeric")) {
         ctype = "numeric"
+      } else if (scanned.type.ci == "integer") {
+        ctype = "integer"
       } else {
         stopf("Invalid type found on line %i: %s", line.counter, scanned.type.cs)
       }
       col.types = c(col.types, ctype)
       col.dfmts = c(col.dfmts, cdfmt)
       col.levels[[length(col.levels) + 1L]] = clevs
-      # FIXME: handle integer! ARFF def says its numeric, but we want to map it to R integer?
     }
     line = readLines(handle, n = 1L)
     line.counter = line.counter + 1L
