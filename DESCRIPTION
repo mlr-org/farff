@@ -1,4 +1,4 @@
-Package: arff
+Package: farff
 Title: Miscellaneous Helper Functions for B. Bischl
 Description: Miscellaneous helper functions for and from B. Bischl and
     some other guys at TU Dortmund, mainly for package development.
@@ -9,6 +9,7 @@ License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 Roxygen: list(wrap = FALSE)
 Imports:
+    BBmisc,
     checkmate,
     data.table
 Suggests:
