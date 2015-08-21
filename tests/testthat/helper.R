@@ -10,12 +10,12 @@ compareRWeka = function(dir, path) {
 
 compareOML = function(data.id) {
   oml.conf = getOMLConfig()
-  cachedir = oml.conf$cache
-  oml.ds = getOMLDataset(data.id)
-  d = oml.ds$data
-  path2 = file.path(dir, path)
-  d1 = readARFF(path2)
-  d2 = RWeka::read.arff(path2)
+  cachedir = oml.conf$cachedir
+  # read to disk, then parse
+  getOMLDataSet(data.id)
+  path = file.path(cachedir, "datasets", data.id, "dataset.arff")
+  d1 = readARFF(path)
+  d2 = RWeka::read.arff(path)
   expect_equal(d1, d2, info = sprintf("Error in OML data id:  %i", data.id))
 }
 

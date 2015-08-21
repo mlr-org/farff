@@ -1,10 +1,13 @@
 context("long test with many OML data sets")
 
 test_that("long test with many OML data sets", {
+  library(OpenML)
+  dchars = listOMLDataSets()
+  dchars2 = subset(dchars, status == "active" & NumberOfInstances < 100)
 
-  # compareRWeka(INST_ARFF_DIR, "iris.arff")
-  # compareRWeka(INST_ARFF_DIR, "house.arff")
-  # compareRWeka(INST_ARFF_DIR, "audiology.arff")
+  for (did in dchars2$did) {
+    compareOML(did)
+  }
 })
 
 
