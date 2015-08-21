@@ -10,12 +10,12 @@ library(BBmisc)
 load_all()
 
 
-# path = "/home/bischl/cos/arff/iris.arff"
+path = "/home/bischl/cos/farff/inst/arffs/iris.arff"
 # path = "/home/bischl/cos/arff/audiology.arff"
 # path = "/home/bischl/cos/arff/house.arff"
-path = "/home/bischl/cos/arff/covtype-normalized.arff"
+# path = "/home/bischl/cos/arff/covtype-normalized.arff"
 
-d1 = readARFF(path)
+d1 = readARFF(path, show.info = TRUE)
 # print(head(d1))
 
 d2 = foreign::read.arff(path)
@@ -26,9 +26,9 @@ expect_equal(d1, d3)
 
 
 mb = microbenchmark(
-  readARFF(path),
+  readARFF(path, show.info = FALSE),
   foreign::read.arff(path),
   RWeka::read.arff(path),
-  times = 2L
+  times = 20L
 )
 print(mb)

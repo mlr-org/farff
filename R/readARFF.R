@@ -1,59 +1,44 @@
-#' @title Require some packages.
+#' @title Read ARFF file into data.frame.
 #'
 #' @description
-#' Packages are loaded either via \code{\link{requireNamespace}} or \code{\link{require}}.
+#' FAST
 #'
-#' If some packages could not be loaded and \code{stop} is \code{TRUE}
-#' the following exception is thrown:
-#' \dQuote{For <why> please install the following packages: <missing packages>}.
-#' If \code{why} is \code{NULL} the message is:
-#' \dQuote{Please install the following packages: <missing packages>}.
-#'
-#' @param min.versions [\code{character}]\cr
-#'   A char vector specifying required minimal version numbers for a subset of packages in \code{packs}.
-#'   Must be named and all names must be in \code{packs}.
-#'   The only exception is when \code{packs} is only a single string, then you are allowed to pass
-#'   an unnamed version string here.
-#'   Default is \code{NULL}, meaning no special version requirements
-#' @param why [\code{character(1)}]\cr
-#'   Short string explaining why packages are required.
-#'   Default is an empty string.
-#' @param stop [\code{logical(1)}]\cr
-#'   Should an exception be thrown for missing packages?
-#'   Default is \code{TRUE}.
-#' @param suppress.warnings [\code{logical(1)}]\cr
-#'   Should warnings be supressed while requiring?
-#'   Default is \code{FALSE}.
-#' @param default.method [\code{character(1)}]\cr
-#'   If the packages are not explicitly prefixed with \dQuote{!} or \dQuote{_},
-#'   this arguments determines the default. Possible values are \dQuote{attach} and
-#'   \dQuote{load}.
-#'   Note that the default is \dQuote{attach}, but this might/will change in a future version, so
-#'   please make sure to always explicitly set this.
-#' @return [\code{logical}]. Named logical vector describing which packages could be loaded (with required version).
-#'   Same length as \code{packs}.
+#' @param path [\code{character(1)}]\cr
+#'   Path to ARFF file with read access.
+#' @return [\code{data.frame}].
 #' @export
 #' @useDynLib arff c_preproc
 
-readARFF = function(path) {
+readARFF = function(path, show.info = TRUE) {
   assertFile(path, access = "r")
+  assertFlag(show.info)
+
   path.out = tempfile()
-  path.out = "/home/bischl/cos/arff/bla.arff"
+  # FIXME:
+  path.out = "/home/bischl/cos/farff/bla.arff"
 
-  st1 = system.time({
-    .Call(c_preproc, path, path.out)
-  })
+  # system.time is slow when we handle small files, only do it for show.info
+  g = if (show.info) {
+    g = function(expr) {
+      st = system.time(expr)
+      return(st)
+    }
+  } else {
+    g = identity
+  }
 
-  st2 = system.time({
-    header = readForeign(path.out)
-  })
+  st1 = g(.Call(c_preproc, path, path.out))
+
+  st2 = g({header = readForeign(path.out)})
+
   # print(header)
-  st3 = system.time({
+  st3 = g({
     dat = fread(path.out, header = FALSE, data.table = FALSE, skip = header$line.counter + 1L,
       na.string = "?")
   })
   colnames(dat) = header$colnames
-  st4 = system.time({
+
+  st4 = g({
   for (i in 1:ncol(dat)) {
     ct = header$coltypes[i]
     if (ct == "factor")
@@ -61,9 +46,9 @@ readARFF = function(path) {
   }
   })
   # dat = convertDataFrameCols(dat, chars.as.factor = TRUE)
-  # messagef("preproc: %f; header: %f; fread: %f; convert: %f", st1[3L], st2[3L], st3[3L], st4[3L])
+  if (show.info)
+    messagef("preproc: %f; header: %f; fread: %f; convert: %f", st1[3L], st2[3L], st3[3L], st4[3L])
   return(dat)
-  # return(1)
 }
 
 

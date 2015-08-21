@@ -1,8 +1,11 @@
 farff.Rcheck
 farff_*.tar.gz
+
 .Rproj.user
 *.Rproj
 .Rhistory
+.RData
+
 html
 src/*.so
 src/*.o
