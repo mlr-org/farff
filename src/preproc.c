@@ -24,6 +24,26 @@ void remove_char(char *s, char c) {
   s[writer]=0;
 }
 
+char* trim_whitespace(char *str) {
+  char *end;
+
+  // Trim leading space
+  while(isspace(*str)) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && isspace(*end)) end--;
+
+  // Write new null terminator
+  *(end+1) = '\n';
+  *(end+2) = 0;
+
+  return str;
+}
+
 /* throw away line if it
  * - is empty
  * - exactly starts with comment char '%'
@@ -35,14 +55,17 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
   const char* path_in = CHAR(asChar(s_path_in));
   const char* path_out = CHAR(asChar(s_path_out));
   char line[50000];
+  char* line2;
 
   handle_in = fopen(path_in, "r");
   handle_out = fopen(path_out, "w");
 
   while (fgets(line, sizeof line, handle_in)) {
-    if (line[0] != '%' && !is_empty(line)) {
-      remove_char(line, '\'');
-      fputs(line, handle_out);
+    line2 = trim_whitespace(line);
+    /* line2 = line; */
+    if (line2[0] != '%' && !is_empty(line2)) {
+      remove_char(line2, '\'');
+      fputs(line2, handle_out);
     }
   }
   fclose(handle_in);
