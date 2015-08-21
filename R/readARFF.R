@@ -2,6 +2,7 @@
 #'
 #' @description
 #' FAST
+#' numbers should not be quoted
 #'
 #' @param path [\code{character(1)}]\cr
 #'   Path to ARFF file with read access.
@@ -77,7 +78,7 @@ readHeader = function(path) {
   line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
     if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 0L) {
-      line.split = str_split(line, "\\p{WHITE_SPACE}", n = 3L)[[1L]]
+      line.split = str_split(trimws(line), "\\p{WHITE_SPACE}", n = 3L)[[1L]]
       # print(line.split)
       # FIXME: add (rough?) regexp to match here?
       # if (length(line) < 3L)
