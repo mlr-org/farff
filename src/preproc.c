@@ -24,6 +24,17 @@ void remove_char(char *s, char c) {
   s[writer]=0;
 }
 
+void convert_quotes(char *s) {
+  int i = 0;
+
+  while (s[i]) {
+    if (s[i] == '\'')
+      s[i] = '"';
+    i++;
+  }
+  s[i] = 0;
+}
+
 char* trim_whitespace(char *str) {
   char *end;
 
@@ -64,7 +75,7 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
     line2 = trim_whitespace(line);
     /* line2 = line; */
     if (line2[0] != '%' && !is_empty(line2)) {
-      remove_char(line2, '\'');
+      convert_quotes(line2);
       fputs(line2, handle_out);
     }
   }

@@ -30,15 +30,17 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
   st2 = g({header = readHeader(tmp.file)})
 
   # print(header)
-  # FIXME: should we set the colClasses here, returned in 'header'?
+  col.types = str_replace_all(header$col.types, "factor", "character")
+  # print(col.types)
+
   st3 = g({
     dat = fread(tmp.file, skip = header$line.counter, autostart = 1L, header = FALSE,
       sep = ",", na.string = "?", stringsAsFactors = FALSE,
+      colClasses = col.types,
       data.table = FALSE,
     )
   })
   colnames(dat) = header$col.names
-  # colnames(dat) = str_replace_all(header$col.names, "'", "")
   # print(str(dat))
 
   st4 = g({
@@ -46,7 +48,7 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
     ct = header$col.types[i]
     if (ct == "factor") {
       clevs = header$col.levels[[i]]
-      # clevs = str_replace_all(clevs, "'", "")
+      clevs = str_replace_all(clevs, "\"", "")
       dat[,i] = factor(dat[,i], levels = clevs)
       # FIXME: annyoing to check against RWeka here
       # we should really doc what happens with the levels of the factors from ARFF
@@ -79,7 +81,7 @@ readHeader = function(path) {
       # FIXME: add (rough?) regexp to match here?
       # if (length(line) < 3L)
         # stop("Invalid attribute specification.")
-      col.names = c(col.names, trimws(line.split[2L]))
+      col.names = c(col.names, line.split[2L])
       scanned.type.cs = trimws(line.split[3L])
       scanned.type.ci = tolower(scanned.type.cs)
       cdfmt = NA
@@ -120,6 +122,9 @@ readHeader = function(path) {
     stop("Missing data section.")
   if (is.null(colnames))
     stop("Missing attribute section.")
+
+  col.names = trimws(str_replace_all(col.names, "\"", ""))
+
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
 
