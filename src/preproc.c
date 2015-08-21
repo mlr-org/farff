@@ -12,60 +12,34 @@ int is_empty(const char *s) {
   return 1;
 }
 
-void remove_char(char *s, char c) {
-  int writer = 0, reader = 0;
-
-  while (s[reader]) {
-    if (s[reader]!=c) {
-      s[writer++] = s[reader];
-    }
-    reader++;
-  }
-  s[writer]=0;
-}
-
-void convert_quotes(char *s) {
+void convert_line(char s[], char t[]) {
   int i = 0;
+  int j = 0;
+  int in_quotes = 0;
+  int is_quote = 0;
 
-  while (s[i]) {
-    if (s[i] == '\'')
-      s[i] = '"';
-    i++;
-  }
-  s[i] = 0;
-}
 
-void convert_na(char *s, char *t) {
-  int i = 0, j = 0;
-
-  do {
-    if (s[i] == '?') {
+  while(1) {
+    /* got string delim: copy + take a break */
+    if (s[i] == 0) {
+      t[j] = 0; i++; j++;
+      break;
+    /* got quote:  set standard quote in t for data.table + toggle in_quotes */
+    } else if (s[i] == '\'' || s[i] == '"') {
+      t[j] = '"'; i++; j++;
+      in_quotes = !in_quotes;
+    /* got space + not in quotes: remove the crap */
+    } else if (!in_quotes && s[i] == ' ') {
+      i++;
+    /* got ? and not in quotes: copy NA */
+    } else if (!in_quotes && s[i] == '?') {
       t[j++] = 'N'; t[j++] = 'A';
       i++;
+    /* else: copy slot */
     } else {
-      t[j++] = s[i++];
+      t[j] = s[i]; i++; j++;
     }
-  } while(s[i-1]);
-}
-
-char* trim_whitespace(char *str) {
-  char *end;
-
-  // Trim leading space
-  while(isspace(*str)) str++;
-
-  if(*str == 0)  // All spaces?
-    return str;
-
-  // Trim trailing space
-  end = str + strlen(str) - 1;
-  while(end > str && isspace(*end)) end--;
-
-  // Write new null terminator
-  *(end+1) = '\n';
-  *(end+2) = 0;
-
-  return str;
+  }
 }
 
 /* throw away line if it
@@ -87,17 +61,15 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
   handle_out = fopen(path_out, "w");
 
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
-    line_p = trim_whitespace(line_buf_1);
-    if (strcmp(line_p, "@data\n") == 0 || strcmp(line_p, "@DATA\n") == 0)
+    if (strcmp(line_buf_1, "@data\n") == 0 || strcmp(line_buf_1, "@DATA\n") == 0)
       data_sect_reached = 1;
     if (data_sect_reached) {
-      remove_char(line_p, ' ');
-      convert_na(line_p, line_buf_2);
+      convert_line(line_buf_1, line_buf_2);
       line_p = line_buf_2;
+    } else {
+      line_p = line_buf_1;
     }
-    /* line_p = line; */
     if (line_p[0] != '%' && !is_empty(line_p)) {
-      convert_quotes(line_p);
       fputs(line_p, handle_out);
     }
   }

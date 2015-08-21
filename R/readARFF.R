@@ -35,7 +35,7 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
 
   st3 = g({
     dat = fread(tmp.file, skip = header$line.counter, autostart = 1L, header = FALSE,
-      sep = ",", na.string = "?", stringsAsFactors = FALSE,
+      sep = ",", stringsAsFactors = FALSE,
       colClasses = col.types,
       data.table = FALSE,
     )
@@ -49,6 +49,7 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
     if (ct == "factor") {
       clevs = header$col.levels[[i]]
       clevs = str_replace_all(clevs, "\"", "")
+      clevs = str_replace_all(clevs, "'", "")
       dat[,i] = factor(dat[,i], levels = clevs)
       # FIXME: annyoing to check against RWeka here
       # we should really doc what happens with the levels of the factors from ARFF
@@ -125,6 +126,7 @@ readHeader = function(path) {
     stop("Missing attribute section.")
 
   col.names = trimws(str_replace_all(col.names, "\"", ""))
+  col.names = trimws(str_replace_all(col.names, "'", ""))
 
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
