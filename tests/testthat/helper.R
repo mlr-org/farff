@@ -5,7 +5,7 @@ compareRWeka = function(dir, path) {
   path2 = file.path(dir, path)
   d1 = readARFF(path2)
   d2 = RWeka::read.arff(path2)
-  expect_equal(d1, d2)
+  expect_equal(d1, d2, info = sprintf("Error in file:  %s", path))
 }
 
 compareOML = function(data.id) {
@@ -16,7 +16,7 @@ compareOML = function(data.id) {
   path2 = file.path(dir, path)
   d1 = readARFF(path2)
   d2 = RWeka::read.arff(path2)
-  expect_equal(d1, d2)
+  expect_equal(d1, d2, info = sprintf("Error in OML data id:  %i", data.id))
 }
 
 

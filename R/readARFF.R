@@ -9,6 +9,8 @@
 #' @export
 #' @useDynLib farff c_preproc
 
+# FIXME: do we drop levels on factors if they dont occur in data?
+
 readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
   assertFile(path, access = "r")
   assertFlag(show.info)
@@ -31,18 +33,24 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
   # FIXME: should we set the colClasses here, returned in 'header'?
   st3 = g({
     dat = fread(tmp.file, skip = header$line.counter, autostart = 1L, header = FALSE,
-      sep = ",", na.string = "?",
+      sep = ",", na.string = "?", stringsAsFactors = FALSE,
       data.table = FALSE,
     )
   })
   colnames(dat) = header$col.names
+  # colnames(dat) = str_replace_all(header$col.names, "'", "")
   # print(str(dat))
 
   st4 = g({
   for (i in 1:ncol(dat)) {
     ct = header$col.types[i]
-    if (ct == "factor")
-      dat[,i] = factor(dat[,i], levels = header$col.levels[[i]])
+    if (ct == "factor") {
+      clevs = header$col.levels[[i]]
+      # clevs = str_replace_all(clevs, "'", "")
+      dat[,i] = factor(dat[,i], levels = clevs)
+      # FIXME: annyoing to check against RWeka here
+      # we should really doc what happens with the levels of the factors from ARFF
+    }
   }
   })
   # dat = convertDataFrameCols(dat, chars.as.factor = TRUE)
@@ -67,7 +75,7 @@ readHeader = function(path) {
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
     if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 0L) {
       line.split = str_split(line, "\\p{WHITE_SPACE}", n = 3L)[[1L]]
-      print(line.split)
+      # print(line.split)
       # FIXME: add (rough?) regexp to match here?
       # if (length(line) < 3L)
         # stop("Invalid attribute specification.")
@@ -115,14 +123,10 @@ readHeader = function(path) {
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
 
-  # data = read.table(file, sep = ",", na.strings = "?", colClasses = col_types,
-    # comment.char = "%")
+  # FIXME: this is done for dates? do we have such a dataset?
   # if (any(ind = which(!is.na(col_dfmts))))
     # for (i in ind) data[i] = as.data.frame(strptime(data[[i]],
         # col_dfmts[i]))
-  # for (i in seq_len(length(data))) if (is.factor(data[[i]]))
-    # levels(data[[i]]) = gsub("\\\\", "", levels(data[[i]]))
-  # names(data) = col_names
   # data
 }
 
