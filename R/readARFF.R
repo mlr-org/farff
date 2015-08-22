@@ -10,8 +10,6 @@
 #' @export
 #' @useDynLib farff c_preproc
 
-# FIXME: do we drop levels on factors if they dont occur in data?
-
 readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
   assertFile(path, access = "r")
   assertFlag(show.info)
@@ -52,8 +50,6 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
       clevs = str_replace_all(clevs, "\"", "")
       clevs = str_replace_all(clevs, "'", "")
       dat[,i] = factor(dat[,i], levels = clevs)
-      # FIXME: annyoing to check against RWeka here
-      # we should really doc what happens with the levels of the factors from ARFF
     }
   }
   })

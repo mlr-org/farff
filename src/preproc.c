@@ -17,6 +17,7 @@ void convert_line(char s[], char t[]) {
   int j = 0;
   int in_quotes = 0;
   int is_quote = 0;
+  char old_quote = 0;
 
 
   while(1) {
@@ -24,20 +25,29 @@ void convert_line(char s[], char t[]) {
     if (s[i] == 0) {
       t[j] = 0; i++; j++;
       break;
-    /* got quote:  set standard quote in t for data.table + toggle in_quotes */
-    } else if (s[i] == '\'' || s[i] == '"') {
-      t[j] = '"'; i++; j++;
-      in_quotes = !in_quotes;
-    /* got space + not in quotes: remove the crap */
-    } else if (!in_quotes && s[i] == ' ') {
-      i++;
-    /* got ? and not in quotes: copy NA */
-    } else if (!in_quotes && s[i] == '?') {
-      t[j++] = 'N'; t[j++] = 'A';
-      i++;
-    /* else: copy slot */
+    }
+
+    if (in_quotes) {
+      /* in quote, we copy all chars, except if we find the exakt old quote char from the start */
+      /* in that case we copy " to t and leave quote mode */
+      if (s[i] == old_quote) {
+        t[j] = '"'; i++; j++;
+        in_quotes = 0;
+      } else {
+        t[j] = s[i]; i++; j++;
+      }
     } else {
-      t[j] = s[i]; i++; j++;
+      switch(s[i]) {
+        case '\'':; /* found quote: copy " to t, go to quoted mode and store old quote */
+        case '"':
+          t[j] = '"'; old_quote = s[i]; in_quotes = 1; i++; j++; break;
+        case ' ': /* got space: remove the crap */
+          i++; break;
+        case '?': /* got ?: copy NA */
+         t[j++] = 'N'; t[j++] = 'A'; i++; break;
+        default: /*copy slot */
+          t[j] = s[i]; i++; j++; break;
+      }
     }
   }
 }
