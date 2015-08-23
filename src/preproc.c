@@ -33,6 +33,14 @@ void convert_line(char s[], char t[]) {
       if (s[i] == old_quote) {
         t[j] = '"'; i++; j++;
         in_quotes = 0;
+      } else if (s[i] == '\\') {
+        if (s[i+1] == 'n') {
+          t[j] = '\n'; i+=2; j+=1;
+        } else if (s[i+1] == '\'' && old_quote == '\'') {
+          t[j] = '\''; i+=2; j+=1;
+        } else {
+          i += 1;
+        }
       } else {
         t[j] = s[i]; i++; j++;
       }
