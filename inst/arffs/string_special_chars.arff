@@ -1,0 +1,10 @@
+@RELATION strings
+
+@ATTRIBUTE s1 STRING
+@ATTRIBUTE s2 STRING
+
+@DATA
+"h\j", "fo'o"
+"f\n", "xs"
+'b\'s', 'xx'
+

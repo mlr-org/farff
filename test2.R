@@ -16,7 +16,7 @@ load_all()
 # d1 = readARFF(path, show.info = FALSE)
 # print(head(d1))
 
-data.id = 3
+data.id = 374
 
 oml.conf = getOMLConfig()
 cachedir = oml.conf$cachedir
@@ -26,5 +26,10 @@ path = file.path(cachedir, "datasets", data.id, "dataset.arff")
 
 d1 = readARFF(path, tmp.file = "/home/bischl/cos/farff/bla.arff")
 d2 = RWeka::read.arff(path)
-expect_equal(d1, d2)
+# expect_equal(d1, d2)
+
+x = explode(d1$text[1], sep="")
+y = explode(d2$text[1], sep="")
+dd = cbind(x, y)
+print(dd[7000:7028,])
 
