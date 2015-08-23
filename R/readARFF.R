@@ -73,9 +73,10 @@ readHeader = function(path) {
   line = readLines(handle, n = 1L)
   line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
+    # remove comments starting with %
+    line = str_replace(line, "%.*$", "")
     if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 0L) {
       line.split = str_split(trimws(line), "\\p{WHITE_SPACE}", n = 3L)[[1L]]
-      # print(line.split)
       # FIXME: add (rough?) regexp to match here?
       # if (length(line) < 3L)
         # stop("Invalid attribute specification.")

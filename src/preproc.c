@@ -18,9 +18,9 @@ void convert_line(char s[], char t[]) {
   int in_quotes = 0;
   int is_quote = 0;
   char old_quote = 0;
+  int done = 0;
 
-
-  while(1) {
+  while(!done) {
     /* got string delim: copy + take a break */
     if (s[i] == 0) {
       t[j] = 0; i++; j++;
@@ -46,6 +46,8 @@ void convert_line(char s[], char t[]) {
       }
     } else {
       switch(s[i]) {
+        case '%': /* found comment char: set linebreak in t and stop copying */
+          t[j] = '\n'; t[j+1] = 0; done = 1; break;
         case '\'':; /* found quote: copy " to t, go to quoted mode and store old quote */
         case '"':
           t[j] = '"'; old_quote = s[i]; in_quotes = 1; i++; j++; break;
