@@ -73,44 +73,48 @@ readHeader = function(path) {
   line = readLines(handle, n = 1L)
   line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
-    # remove comments starting with %
-    line = str_replace(line, "%.*$", "")
-    if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 0L) {
-      line.split = str_split(trimws(line), "\\p{WHITE_SPACE}", n = 3L)[[1L]]
-      # FIXME: add (rough?) regexp to match here?
-      # if (length(line) < 3L)
-        # stop("Invalid attribute specification.")
-      col.names = c(col.names, line.split[2L])
-      scanned.type.cs = trimws(line.split[3L])
-      scanned.type.ci = tolower(scanned.type.cs)
+    if (!stri_detect(line, regex = "^\\s*@(?i)relation")) {
+      # !is.na(stri_match_first_regex("^\\s+%.*$")[1,1])) {
+      regex1 = "\\s*(?i)@attribute\\s+(.\\w+)\\s+(\\w+|\\{.*\\})"
+      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(\\w+|\\{.*\\})"
+      m = stri_match_first_regex(line, regex1)
+      if (is.na(m[1L, 1L]))
+        m = stri_match_first_regex(line, regex2)
+      if (is.na(m[1L, 1L]))
+        stopf("Invalid column specification line found in ARFF header:\n%s", line)
+
+      cname = m[1L, 2L]
+      ctype.cs = m[1L, 3L]
+      ctype.ci = tolower(ctype.cs)
       cdfmt = NA
       clevs = NA
 
-      if (scanned.type.ci == "date") {
+      if (ctype.ci == "date") {
         ctype = "character"
         cdfmt = if (length(line) > 3L)
           ISO_8601_to_POSIX_datetime_format(line[4L])
         else
           "%Y-%m-%d %H:%M:%S"
-      } else if (scanned.type.ci == "relational") {
+      } else if (ctype.ci == "relational") {
         stop("Type 'relational' currently not implemented.")
-      } else if (grepl("\\{.*", scanned.type.ci)) {
+      } else if (grepl("\\{.*", ctype.ci)) {
         # if we see "{*", then it is a factor, as {} contains the levels
         ctype = "factor"
-        clevs = scanned.type.cs
+        clevs = ctype.cs
         clevs = sub("\\{", "", clevs)
         clevs = sub("\\}", "", clevs)
         clevs = strsplit(clevs, ",")[[1L]]
         clevs = trimws(clevs)
-      } else if (scanned.type.ci == "string") {
+      } else if (ctype.ci == "string") {
         ctype = "character"
-      } else if (scanned.type.ci %in% c("real", "numeric")) {
+      } else if (ctype.ci %in% c("real", "numeric")) {
         ctype = "numeric"
-      } else if (scanned.type.ci == "integer") {
+      } else if (ctype.ci == "integer") {
         ctype = "integer"
       } else {
         stopf("Invalid type found on line %i: %s", line.counter, scanned.type.cs)
       }
+      col.names = c(col.names, cname)
       col.types = c(col.types, ctype)
       col.dfmts = c(col.dfmts, cdfmt)
       col.levels[[length(col.levels) + 1L]] = clevs

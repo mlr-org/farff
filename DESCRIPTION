@@ -12,7 +12,8 @@ Imports:
     BBmisc,
     checkmate,
     data.table,
-    stringr
+    stringr,
+    stringi
 Suggests:
     testthat
 LazyData: yes
