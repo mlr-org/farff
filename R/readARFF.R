@@ -75,7 +75,7 @@ readHeader = function(path) {
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
     if (!stri_detect(line, regex = "^\\s*@(?i)relation")) {
       # !is.na(stri_match_first_regex("^\\s+%.*$")[1,1])) {
-      regex1 = "\\s*(?i)@attribute\\s+(.\\w+)\\s+(\\w+|\\{.*\\})"
+      regex1 = "\\s*(?i)@attribute\\s+([\\w|\\.]+)\\s+(\\w+|\\{.*\\})"
       regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(\\w+|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
       if (is.na(m[1L, 1L]))
