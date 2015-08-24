@@ -18,6 +18,10 @@ compareOML = function(data.id) {
     d1 = readARFF(path)
     d2 = RWeka::read.arff(path)
     expect_equal(d1, d2, info = sprintf("Error in OML data id:  %i", data.id))
+    outfile = tempfile()
+    writeARFF(d2, path = outfile)
+    d3 = RWeka::read.arff(outfile)
+    expect_equal(d2, d3, info = sprintf("Error in OML data id (after writeARFF):  %i", data.id))
   })
 }
 
