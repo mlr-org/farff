@@ -88,7 +88,8 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
 
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
     convert_line(line_buf_1, line_buf_2);
-    fputs(line_buf_2, handle_out);
+    if (!is_empty(line_buf_2))
+      fputs(line_buf_2, handle_out);
   }
   fclose(handle_in);
   fclose(handle_out);

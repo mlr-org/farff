@@ -74,8 +74,8 @@ readHeader = function(path) {
     if (!stri_detect(line, regex = "^\\s*@(?i)relation") &&
       !stri_detect(line, regex = "^\\s*%.*") &&
       trimws(line) != "" ) {
-      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(\\w+|\\{.*\\})"
-      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(\\w+|\\{.*\\})"
+      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|\\{.*\\})"
+      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
       if (is.na(m[1L, 1L]))
         m = stri_match_first_regex(line, regex2)
@@ -111,7 +111,7 @@ readHeader = function(path) {
       } else if (ctype.ci == "integer") {
         ctype = "integer"
       } else {
-        stopf("Invalid type found on line %i: %s", line.counter, scanned.type.cs)
+        stopf("Invalid type found on line %i:\n%s", line.counter, line)
       }
       col.names = c(col.names, cname)
       col.types = c(col.types, ctype)
