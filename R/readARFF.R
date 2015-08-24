@@ -73,8 +73,7 @@ readHeader = function(path) {
   line = readLines(handle, n = 1L)
   line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
-    if (!stri_detect(line, regex = "^\\s*@(?i)relation")) {
-      # !is.na(stri_match_first_regex("^\\s+%.*$")[1,1])) {
+    if (!stri_detect(line, regex = "^\\s*@(?i)relation") && !stri_detect(line, regex = "^\\s*%.*")) {
       regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(\\w+|\\{.*\\})"
       regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(\\w+|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
