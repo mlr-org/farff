@@ -66,12 +66,13 @@ void convert_line(char s[], char t[]) {
  * - is empty
  * - exactly starts with comment char '%'
 */
-SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
+SEXP c_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
 
   FILE* handle_in;
   FILE* handle_out;
   const char* path_in = CHAR(asChar(s_path_in));
   const char* path_out = CHAR(asChar(s_path_out));
+  int data_sect_index = asInteger(s_data_sect_index);
   char line_buf_1[50000];
   char line_buf_2[50000];
   char* line_p;
@@ -80,18 +81,14 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out) {
   handle_in = fopen(path_in, "r");
   handle_out = fopen(path_out, "w");
 
+  /* FIXME: can we skip these lines faster? */
+  for (int i = 0; i<data_sect_index; i++) {
+    fgets(line_buf_1, sizeof line_buf_1, handle_in);
+  }
+
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
-    if (strcmp(line_buf_1, "@data\n") == 0 || strcmp(line_buf_1, "@DATA\n") == 0)
-      data_sect_reached = 1;
-    if (data_sect_reached) {
-      convert_line(line_buf_1, line_buf_2);
-      line_p = line_buf_2;
-    } else {
-      line_p = line_buf_1;
-    }
-    if (line_p[0] != '%' && !is_empty(line_p)) {
-      fputs(line_p, handle_out);
-    }
+    convert_line(line_buf_1, line_buf_2);
+    fputs(line_buf_2, handle_out);
   }
   fclose(handle_in);
   fclose(handle_out);

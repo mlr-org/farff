@@ -24,17 +24,15 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
     g = identity
   }
 
-  st1 = g(.Call(c_preproc, path, tmp.file))
-
-  st2 = g({header = readHeader(tmp.file)})
-
+  st1 = g({header = readHeader(path)})
   # print(header)
+
+  st2 = g(.Call(c_preproc, path, tmp.file, as.integer(header$line.counter)))
+
   col.types = str_replace_all(header$col.types, "factor", "character")
-  # print(col.types)
 
   st3 = g({
-    dat = fread(tmp.file, skip = header$line.counter, autostart = 1L, header = FALSE,
-      sep = ",", stringsAsFactors = FALSE,
+    dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
       colClasses = col.types,
       data.table = FALSE,
     )
@@ -73,7 +71,9 @@ readHeader = function(path) {
   line = readLines(handle, n = 1L)
   line.counter = 1L
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
-    if (!stri_detect(line, regex = "^\\s*@(?i)relation") && !stri_detect(line, regex = "^\\s*%.*")) {
+    if (!stri_detect(line, regex = "^\\s*@(?i)relation") &&
+      !stri_detect(line, regex = "^\\s*%.*") &&
+      trimws(line) != "" ) {
       regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(\\w+|\\{.*\\})"
       regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(\\w+|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
