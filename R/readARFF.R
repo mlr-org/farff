@@ -45,8 +45,6 @@ readARFF = function(path, tmp.file = tempfile(), show.info = TRUE) {
     ct = header$col.types[i]
     if (ct == "factor") {
       clevs = header$col.levels[[i]]
-      clevs = str_replace_all(clevs, "\"", "")
-      clevs = str_replace_all(clevs, "'", "")
       dat[,i] = factor(dat[,i], levels = clevs)
     }
   }

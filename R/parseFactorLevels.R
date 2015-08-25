@@ -36,6 +36,7 @@ parseFactorLevels = function(x, line = "LINE NOT GIVEN") {
     x = z$rest
   }
   z = consume(x, "^\\s*\\}\\s*", no.match.error = TRUE)
+  levs = stri_replace_all(levs, "%", fixed = "\\%")
   return(levs)
 }
 
