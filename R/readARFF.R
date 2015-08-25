@@ -87,7 +87,8 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
   }
   })
   if (show.info)
-    messagef("header: %f; preproc: %f; data: %f; postproc: %f", st1[3L], st2[3L], st3[3L], st4[3L])
+    messagef("header: %f; preproc: %f; data: %f; postproc: %f; total: %f",
+      st1[3L], st2[3L], st3[3L], st4[3L], st1[3L] + st2[3L] + st3[3L] + st4[3L])
   return(dat)
 }
 
