@@ -1,5 +1,3 @@
-# FIXME: we are not very fast. data.table::fwrite does not exist, we could use reader::write.csv?
-
 writeARFF = function (x, path, relation = deparse(substitute(x))) {
   assertDataFrame(x)
   assertPathForOutput(path)

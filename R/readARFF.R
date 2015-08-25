@@ -23,7 +23,6 @@
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
 
-# FIXME: preproc data file into mem not into tmp file, to be faster
 # FIXME: choose readr only with string columns
 
 readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.info = TRUE) {
