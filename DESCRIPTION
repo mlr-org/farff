@@ -13,7 +13,8 @@ Imports:
     checkmate,
     data.table,
     stringr,
-    stringi
+    stringi,
+    readr
 Suggests:
     testthat
 LazyData: yes

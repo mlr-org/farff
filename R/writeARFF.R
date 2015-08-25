@@ -1,3 +1,5 @@
+#' @export
+#' 
 writeARFF = function (x, path, relation = deparse(substitute(x))) {
   assertDataFrame(x)
   assertPathForOutput(path)
