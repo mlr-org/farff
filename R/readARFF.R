@@ -25,9 +25,15 @@
 
 # FIXME: choose readr only with string columns
 
-readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.info = TRUE) {
+readARFF = function(path, data.reader = "readr", tmp.file = NULL, show.info = TRUE) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr", "data.table"))
+  if (is.null(tmp.file)) {
+    if (data.reader == "readr")
+      tmp.file = tempfile()
+  } else {
+    assertPathForOutput(tmp.file, overwrite = TRUE)
+  }
   assertFlag(show.info)
 
   if (show.info)
@@ -47,7 +53,8 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
 
   if (data.reader == "data.table")  {
     requirePackages("data.table")
-    st2 = g(.Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
+    st2 = g(dt.preproc.res <- .Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
+    # print(dt.preproc.res)
   } else {
     requirePackages("readr")
     st2 = g(.Call(c_rd_preproc, path, tmp.file, as.integer(header$line.counter)))
@@ -55,10 +62,9 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
 
   col.types = str_replace_all(header$col.types, "factor", "character")
 
-
   if (data.reader == "data.table") {
     st3 = g({
-      dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
+      dat = fread(dt.preproc.res, header = FALSE, sep = ",", stringsAsFactors = FALSE,
         colClasses = col.types,
         data.table = FALSE,
         )
