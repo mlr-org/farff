@@ -39,7 +39,9 @@ void convert_line(char s[], char t[]) {
         } else if (s[i+1] == '\'' && old_quote == '\'') {
           t[j] = '\''; i+=2; j+=1;
         } else if (s[i+1] == '"' && old_quote == '\'') {
-          t[j] = '\\'; t[j+1] = '"';  i+=2; j+=2;
+          t[j] = '"';  i+=2; j+=1;
+        } else if (s[i+1] == '"' && old_quote == '"') {
+          t[j] = '"';  i+=2; j+=1;
         } else {
           i += 1;
         }
