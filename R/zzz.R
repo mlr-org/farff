@@ -1,8 +1,9 @@
 #' @import BBmisc
 #' @import checkmate
 #' @import data.table
-#' @import stringr
+#' @import readr
 #' @import stringi
+#' @import stringr
 NULL
 
 
