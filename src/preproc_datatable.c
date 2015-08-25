@@ -3,7 +3,7 @@
 #include <Rdefines.h>
 #include <ctype.h>
 
-int is_empty(const char *s) {
+int dt_is_empty(const char *s) {
   while (*s != '\0') {
     if (!isspace(*s))
       return 0;
@@ -12,7 +12,7 @@ int is_empty(const char *s) {
   return 1;
 }
 
-void convert_line(char s[], char t[]) {
+void dt_convert_line(char s[], char t[]) {
   int i = 0;
   int j = 0;
   int in_quotes = 0;
@@ -70,7 +70,7 @@ void convert_line(char s[], char t[]) {
  * - is empty
  * - exactly starts with comment char '%'
 */
-SEXP c_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
+SEXP c_dt_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
 
   FILE* handle_in;
   FILE* handle_out;
@@ -91,13 +91,14 @@ SEXP c_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   }
 
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
-    convert_line(line_buf_1, line_buf_2);
-    if (!is_empty(line_buf_2))
+    dt_convert_line(line_buf_1, line_buf_2);
+    if (!dt_is_empty(line_buf_2))
       fputs(line_buf_2, handle_out);
   }
   fclose(handle_in);
   fclose(handle_out);
   return R_NilValue;
 }
+
 
 
