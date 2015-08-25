@@ -1,3 +1,7 @@
+
+# FIXME: this is a slow function, due to regexp consuming in a loop.
+# but i could not find a better version that works on all definitions.
+# maybe this must be written in C too?
 parseFactorLevels = function(x, line = "LINE NOT GIVEN") {
 
   consume = function(s, r, no.match.error = FALSE) {
