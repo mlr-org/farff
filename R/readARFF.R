@@ -71,6 +71,7 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
       col.types = collapse(vcapply(col.types, function(x) substr(x, 1L, 1L)), sep = "")
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
         escape_backslash = TRUE, escape_double = FALSE)
+      # print(problems(dat))
       dat = as.data.frame(dat)
     })
   }

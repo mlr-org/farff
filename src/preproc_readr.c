@@ -78,8 +78,8 @@ SEXP c_rd_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   const char* path_in = CHAR(asChar(s_path_in));
   const char* path_out = CHAR(asChar(s_path_out));
   int data_sect_index = asInteger(s_data_sect_index);
-  char line_buf_1[50000];
-  char line_buf_2[50000];
+  char line_buf_1[100000];
+  char line_buf_2[100000];
   char* line_p;
   int data_sect_reached = 0;
 
