@@ -10,6 +10,8 @@
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
 
+# FIXME: we should doc that integers in ARFF are read in as numerics
+
 readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.info = TRUE) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr", "data.table"))
@@ -49,6 +51,7 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
   } else {
     st3 = g({
       col.types = str_replace_all(col.types, "numeric", "double")
+      col.types = str_replace_all(col.types, "integer", "double")
       col.types = collapse(vcapply(col.types, function(x) substr(x, 1L, 1L)), sep = "")
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
         escape_backslash = TRUE, escape_double = FALSE)
