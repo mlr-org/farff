@@ -1,22 +1,38 @@
 #' @title Read ARFF file into data.frame.
 #'
 #' @description
-#' FAST
-#' numbers should not be quoted
+#' Implementation of a fast ARFF parser that produces consistent results compared to the reference
+#' implementation in \code{RWeka}.
+#' The \dQuote{@DATA} section is read with either reader::read_delim from reader or fread from
+#' data.table.
+#'
+#' Note: Integer feature columns in ARFF files are parsed as numeric columns into R.
+#'
+#' @details
+#' ARFF parsers are already available in package RWeka in \code{\link[RWeka]{read.arff}} and package
+#' \code{foreign} in \code{\link[foreign]{read.arff}}. The RWeka parser requires \code{Java} and
+#' \code{rJava}, a dependency which is notoriously hard to configure for users in R. It is also quite slow.
+#' The parser in foreign in written in pure R, slow and not fully consistent with the reference
+#' implementation in \code{RWeka}.
 #'
 #' @param path [\code{character(1)}]\cr
 #'   Path to ARFF file with read access.
+#' @param show.info [\code{logical(1)}]\cr
+#'   Default is \code{TRUE}
 #' @return [\code{data.frame}].
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
 
-# FIXME: we should doc that integers in ARFF are read in as numerics
+# FIXME: preproc data file into mem not into tmp file, to be faster
+# FIXME: choose readr only with string columns
 
 readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.info = TRUE) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr", "data.table"))
   assertFlag(show.info)
 
+  if (show.info)
+    messagef("Parse with reader=%s : %s", data.reader, path)
   # system.time is slow when we handle small files, only do it for show.info
   g = if (show.info) {
     g = function(expr) {
@@ -27,7 +43,7 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
     g = identity
   }
 
-    st1 = g({header = parseHeader(path)})
+  st1 = g({header = parseHeader(path)})
   # print(header)
 
   if (data.reader == "data.table")  {
@@ -70,9 +86,8 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
     }
   }
   })
-  # dat = convertDataFrameCols(dat, chars.as.factor = TRUE)
   if (show.info)
-    messagef("preproc: %f; header: %f; fread: %f; convert: %f", st1[3L], st2[3L], st3[3L], st4[3L])
+    messagef("header: %f; preproc: %f; data: %f; postproc: %f", st1[3L], st2[3L], st3[3L], st4[3L])
   return(dat)
 }
 
