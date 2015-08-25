@@ -3,6 +3,7 @@
 #include <Rdefines.h>
 #include <ctype.h>
 
+/* FIXME: this copy paste function is stupid! */
 int rd_is_empty(const char *s) {
   while (*s != '\0') {
     if (!isspace(*s))
