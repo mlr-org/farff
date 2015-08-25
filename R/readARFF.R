@@ -3,7 +3,7 @@
 #' @description
 #' Implementation of a fast ARFF parser that produces consistent results compared to the reference
 #' implementation in \code{RWeka}.
-#' The \dQuote{@DATA} section is read with either reader::read_delim from reader or fread from
+#' The \dQuote{DATA} section is read with either reader::read_delim from reader or fread from
 #' data.table.
 #'
 #' Note: Integer feature columns in ARFF files are parsed as numeric columns into R.
