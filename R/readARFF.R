@@ -56,7 +56,7 @@ readARFF = function(path, tmp.file = tempfile(), data.reader = "readr", show.inf
     })
   }
   colnames(dat) = header$col.names
-  print(str(dat))
+  # print(str(dat))
 
   st4 = g({
   for (i in 1:ncol(dat)) {
