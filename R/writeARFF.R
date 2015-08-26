@@ -1,5 +1,5 @@
 #' @export
-#' 
+#'
 writeARFF = function (x, path, relation = deparse(substitute(x))) {
   assertDataFrame(x)
   assertPathForOutput(path)
@@ -26,6 +26,10 @@ writeARFF = function (x, path, relation = deparse(substitute(x))) {
     } else if (is.factor(coldat)) {
       lev = squote(levels(coldat))
       type = paste0("{", collapse(lev, ","), "}")
+    } else if (is.logical(coldat)) {
+      # FIXME: doc that this converions is done!
+      type = "{FALSE, TRUE}"
+      x[, cn] = as.factor(x[, cn])
     } else if (inherits(x[, cn], "Date")) {
       text = paste(text, "date \"yyyy-MM-dd\"")
       x[, cn] = squote(format(x[, cn]))
