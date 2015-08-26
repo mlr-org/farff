@@ -89,7 +89,12 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
     ct = header$col.types[i]
     if (ct == "factor") {
       clevs = header$col.levels[[i]]
-      dat[,i] = factor(dat[,i], levels = clevs)
+      # RWEKA parses this to logical
+      # FIXME: DOC THIS!
+      if (identical(clevs, c("TRUE", "FALSE")) || identical(clevs, c("FALSE", "TRUE")))
+        dat[,i] = as.logical(dat[,i])
+      else
+        dat[,i] = factor(dat[,i], levels = clevs)
     }
   }
   })
