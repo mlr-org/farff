@@ -2,7 +2,7 @@ context("long test with many OML data sets")
 
 library(OpenML)
 dchars = listOMLDataSets()
-dchars2 = subset(dchars, status == "active" & NumberOfInstances < 1000 & NumberOfFeatures < 20)
+dchars2 = subset(dchars, status == "active" & NumberOfInstances < 2000 & NumberOfFeatures < 40)
 dids = dchars2$did
 
 

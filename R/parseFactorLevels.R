@@ -20,11 +20,17 @@ parseFactorLevels = function(x, line = "LINE NOT GIVEN") {
   x = z$rest
   while(nchar(x) > 0L) {
     z = consume(x, "^'([^']*)'", no.match.error = FALSE)
-    if (is.null(z))
+    lev = z$match
+    if (is.null(z)) {
       z = consume(x, '^"([^"]*)"', no.match.error = FALSE)
-    if (is.null(z))
+      lev = z$match
+    }
+    if (is.null(z)) {
       z = consume(x, "^([^,}]*)", no.match.error = TRUE)
-    levs = c(levs, z$match)
+      # the regexp above could also match some trailing ws before the comma
+      lev = stri_trim(z$match)
+    }
+    levs = c(levs, lev)
     x = z$rest
     z = consume(x, "\\s*,\\s*")
     if (is.null(z))
