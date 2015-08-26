@@ -19,6 +19,7 @@ dids.datatable.broken = c(374, 376,  379,  380)
 
 for (dreader in c("readr", "data.table")) {
   for (did in dids) {
+    print(did)
     if (dreader == "readr" || did %nin% dids.datatable.broken)
       compareOML(did, data.reader = dreader)
   }
