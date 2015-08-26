@@ -25,9 +25,10 @@
 
 # FIXME: choose readr only with string columns
 
-readARFF = function(path, data.reader = "readr", tmp.file = NULL, show.info = TRUE) {
+readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr", "data.table"))
+  # FIXME: decide and doc default better here. mem option is currently unstable
   if (is.null(tmp.file)) {
     if (data.reader == "readr")
       tmp.file = tempfile()
