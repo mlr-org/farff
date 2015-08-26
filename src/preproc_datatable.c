@@ -82,7 +82,7 @@ SEXP c_dt_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   char line_buf_2[100000];
   char* line_p;
   int data_sect_reached = 0;
-  char res[100000];
+  char res[1000000];
   int use_out_file = !isNull(s_path_out);
   res[0] = 0;
 
