@@ -12,7 +12,7 @@ parseHeader = function(path) {
   while (length(line) && regexpr("^[[:space:]]*@(?i)data", line, perl = TRUE, ignore.case = TRUE) == -1L) {
     if (!stri_detect(line, regex = "^\\s*@(?i)relation") &&
       !stri_detect(line, regex = "^\\s*%.*") &&
-      trimws(line) != "" ) {
+      stri_trim(line) != "" ) {
       regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|string|\\{.*\\})"
       regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|string|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
@@ -63,8 +63,8 @@ parseHeader = function(path) {
   if (is.null(colnames))
     stop("Missing attribute section.")
 
-  col.names = trimws(str_replace_all(col.names, "\"", ""))
-  col.names = trimws(str_replace_all(col.names, "'", ""))
+  col.names = stri_trim(str_replace_all(col.names, "\"", ""))
+  col.names = stri_trim(str_replace_all(col.names, "'", ""))
 
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
