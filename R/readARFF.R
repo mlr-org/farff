@@ -17,6 +17,15 @@
 #'
 #' @param path [\code{character(1)}]\cr
 #'   Path to ARFF file with read access.
+#' @param data.reader [\code{character(1)}]\cr
+#'   Package back-end to parse ARFF data section with.
+#'   Either \dQuote{readr} or \dQuote{data.table}
+#'   Default is \dQuote{readr}.
+#' @param tmp.file [\code{character(1)}]\cr
+#'   The ARFF file must be preprocessed a bit, before it can be fed to the \code{data.reader}.
+#'   Path to TEMP output file, where this result is stored.
+#'   The file is deleted on exit.
+#'   Default is \code{tempfile()}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Default is \code{TRUE}
 #' @return [\code{data.frame}].
@@ -46,6 +55,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
   st1 = g({header = parseHeader(path)})
   # print(header)
 
+  on.exit({unlink(tmp.file)})
   if (data.reader == "data.table")  {
     requirePackages("data.table")
     st2 = g(.Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
