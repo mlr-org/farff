@@ -2,9 +2,7 @@ language: r
 env:
     global:
         - _R_CHECK_TIMINGS_=0
-branches:
-    only:
-        - master
+
 warnings_are_errors: true
 apt_packages:
     - r-cran-rjava
