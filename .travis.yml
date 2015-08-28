@@ -1,0 +1,18 @@
+language: r
+env:
+    global:
+        - _R_CHECK_TIMINGS_=0
+branches:
+    only:
+        - master
+warnings_are_errors: true
+apt_packages:
+    - r-cran-rjava
+before_script:
+    - sudo R CMD javareconf
+notifications:
+  email:
+    recipients:
+        - bernd_bischl@gmx.net
+    on_success: change
+    on_failure: always
