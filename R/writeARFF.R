@@ -47,10 +47,10 @@ writeARFF = function (x, path, relation = deparse(substitute(x))) {
       x[, cn] = as.factor(x[, cn])
     } else if (inherits(x[, cn], "Date")) {
       type = "date \"yyyy-MM-dd\""
-      x[, cn] = squote(format(x[, cn]))
+      x[, cn] = format(x[, cn])
     } else if (inherits(x[, cn], "POSIXt")) {
       type = "date \"yyyy-MM-dd HH:mm:ss\""
-      x[, cn] = squote(format(x[, cn]))
+      x[, cn] = format(x[, cn])
     }
     line = sprintf("@attribute %s %s", squote(cn), type)
     writeLines(line, handle, sep = eol)
