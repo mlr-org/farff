@@ -28,13 +28,7 @@
 readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr", "data.table"))
-  # FIXME: decide and doc default better here. mem option is currently unstable
-  if (is.null(tmp.file)) {
-    if (data.reader == "readr")
-      tmp.file = tempfile()
-  } else {
-    assertPathForOutput(tmp.file, overwrite = TRUE)
-  }
+  assertPathForOutput(tmp.file, overwrite = TRUE)
   assertFlag(show.info)
 
   if (show.info)
@@ -54,8 +48,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
 
   if (data.reader == "data.table")  {
     requirePackages("data.table")
-    st2 = g(dt.preproc.res <- .Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
-    # print(dt.preproc.res)
+    st2 = g(.Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
   } else {
     requirePackages("readr")
     st2 = g(.Call(c_rd_preproc, path, tmp.file, as.integer(header$line.counter)))
@@ -65,7 +58,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
 
   if (data.reader == "data.table") {
     st3 = g({
-      dat = fread(dt.preproc.res, header = FALSE, sep = ",", stringsAsFactors = FALSE,
+      dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
         colClasses = col.types,
         data.table = FALSE,
         )

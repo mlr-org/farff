@@ -82,16 +82,10 @@ SEXP c_dt_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   char line_buf_2[100000];
   char* line_p;
   int data_sect_reached = 0;
-  /* FXIME string need to be a lot bigger and size adaptively */
-  char res[10000];
-  int use_out_file = !isNull(s_path_out);
-  res[0] = 0;
 
   handle_in = fopen(path_in, "r");
-  if (use_out_file) {
-    path_out = CHAR(asChar(s_path_out));
-    handle_out = fopen(path_out, "w");
-  }
+  path_out = CHAR(asChar(s_path_out));
+  handle_out = fopen(path_out, "w");
 
   /* FIXME: can we skip these lines faster? *1/ */
   for (int i = 0; i<data_sect_index; i++) {
@@ -101,24 +95,11 @@ SEXP c_dt_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
     dt_convert_line(line_buf_1, line_buf_2);
     if (!dt_is_empty(line_buf_2)) {
-      if (use_out_file)
-        fputs(line_buf_2, handle_out);
-      else
-        strcat(res, line_buf_2);
+      fputs(line_buf_2, handle_out);
     }
   }
   fclose(handle_in);
-  if (use_out_file)
-    fclose(handle_out);
-
-  if (use_out_file) {
-    return s_path_out;
-  } else {
-    SEXP s_res = PROTECT(mkString(res));
-    UNPROTECT(1);
-    return s_res;
-  }
+  fclose(handle_out);
+  return R_NilValue;
 }
-
-
 
