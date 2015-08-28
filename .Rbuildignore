@@ -1,0 +1,15 @@
+src/*.o
+src/*.so
+^.*tar.gz$
+^.*\.swp$
+.gitignore
+.Rproj.user
+.travis.yml
+README.md
+appveyor
+^.editorconfig$
+^.*\.Rproj$
+^\.Rproj\.user$
+^benchmark
+test.R
+test2.R
