@@ -12,6 +12,7 @@ test_that("quick test with small arffs", {
       # FIXME: anneal does not work beacause we have '?', which is a factor level not an NA
       # compareRWeka(INST_ARFF_DIR, "anneal.arff", data.reader = dreader, tmp.file = tf)
       compareRWeka(INST_ARFF_DIR, "kr-vs-kp.arff", data.reader = dreader, tmp.file = tf)
+      compareRWeka(INST_ARFF_DIR, "many_types.arff", data.reader = dreader, tmp.file = tf)
     }
   }
 })

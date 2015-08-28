@@ -13,8 +13,8 @@ parseHeader = function(path) {
     if (!stri_detect(line, regex = "^\\s*@(?i)relation") &&
       !stri_detect(line, regex = "^\\s*%.*") &&
       stri_trim(line) != "" ) {
-      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|string|\\{.*\\})"
-      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|string|\\{.*\\})"
+      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|string|date|\\{.*\\})"
+      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|string|date|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
       if (is.na(m[1L, 1L]))
         m = stri_match_first_regex(line, regex2)

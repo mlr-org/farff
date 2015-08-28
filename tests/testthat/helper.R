@@ -8,6 +8,11 @@ compareRWeka = function(dir, path, data.reader, tmp.file) {
   d2 = RWeka::read.arff(path2)
   expect_equal(d1, d2, info = sprintf("Error with reader %s in file:  %s",
       data.reader, path))
+  outfile = tempfile()
+  writeARFF(d2, path = outfile)
+  d3 = RWeka::read.arff(outfile)
+  expect_equal(d2, d3, info = sprintf("Error with reader %s in file (after writeARFF): %s",
+    data.reader, path))
 }
 
 compareOML = function(data.id, data.reader) {
