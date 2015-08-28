@@ -9,7 +9,7 @@
 
     ```splus
     devtools::install_github("mlr-org/farff")
-    ```i
+    ```
 
 ## What is ARFF
 
