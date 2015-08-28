@@ -8,6 +8,8 @@ branches:
 warnings_are_errors: true
 apt_packages:
     - r-cran-rjava
+r_github_packages:
+    - OpenML/r
 before_script:
     - sudo R CMD javareconf
 notifications:
