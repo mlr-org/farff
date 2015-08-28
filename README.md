@@ -1,10 +1,11 @@
-# farff: A faster ARFF parser
+# farff: A faster ARFF parser. 
+
+A subproject for better file handling with mlr and OpenML.
 
 [![Build Status](https://travis-ci.org/mlr-org/farff.svg?branch=master)](https://travis-ci.org/mlr-org/farff)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/farff)](http://cran.r-project.org/web/packages/farff)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/farff)](http://cran.rstudio.com/web/packages/farff/index.html)
 
-* [Offical CRAN release site](http://cran.r-project.org/web/packages/farff/)
 * Install the development version
 
     ```splus
