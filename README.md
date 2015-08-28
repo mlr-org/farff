@@ -26,7 +26,14 @@ http://weka.wikispaces.com/ARFF
 * The java dependency is annoying.
 * The I/O code in RWeka is pretty slow, at least the reading of files in farff is much faster.
 
-## How does it work
+
+## How does it work?
+``` 
+d = readARFF("iris.arff")
+writeARFF(iris, path = "iris.arff")
+```
+
+## How does it work under the hood?
 
 * We read the ARFF header with pure R code.
 * We preprocess the data section a bit with custom C code and write the result into a TEMP file.
