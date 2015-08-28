@@ -23,16 +23,14 @@ http://weka.wikispaces.com/ARFF
 
 ## RWeka's read.arff and write.arff already exist?
 
-* The java dependency is annoying
+* The java dependency is annoying.
 * The I/O code in RWeka is pretty slow, at least the reading of files in farff is much faster.
-* 
 
 ## How does it work
 
-* We read the ARFF header with pure R code
-* We preprocess the data section a bit with custom C code and write the result into a TEMP file
+* We read the ARFF header with pure R code.
+* We preprocess the data section a bit with custom C code and write the result into a TEMP file.
 * The TEMP file (i.e. the data section) is parsed with data.table::fread or readr::read_delim. The former being faster, the latter being more robust if your file contains strange chars. 
-We preprocess the 
 
 
 
