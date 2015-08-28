@@ -59,8 +59,13 @@ void dt_convert_line(char s[], char t[]) {
           i++; break;
         case '?': /* got ?: copy NA */
          t[j++] = 'N'; t[j++] = 'A'; i++; break;
-        case '\r': /* got MAC line break: copy \n */
-         t[j++] = '\n'; i++; break;
+        case '\r': /* got windows or mmacos line break: copy \n */
+         if (s[i+1] == '\n')
+           i += 2;
+         else
+           i+1;
+         t[j++] = '\n';
+         break;
         default: /*copy slot */
           t[j] = s[i]; i++; j++; break;
       }
