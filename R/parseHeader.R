@@ -63,8 +63,8 @@ parseHeader = function(path) {
   if (is.null(colnames))
     stop("Missing attribute section.")
 
-  col.names = stri_trim(str_replace_all(col.names, "\"", ""))
-  col.names = stri_trim(str_replace_all(col.names, "'", ""))
+  col.names = stri_trim(stri_replace_all(col.names, fixed = "\"", ""))
+  col.names = stri_trim(stri_replace_all(col.names, fixed = "'", ""))
 
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)

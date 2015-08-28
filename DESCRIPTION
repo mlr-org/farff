@@ -12,10 +12,11 @@ Imports:
     BBmisc,
     checkmate,
     data.table,
-    stringr,
     stringi,
     readr
 Suggests:
+    OpenML,
+    RWeka,
     testthat
 LazyData: yes
 ByteCompile: yes

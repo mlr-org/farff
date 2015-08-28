@@ -54,7 +54,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
     st2 = g(.Call(c_rd_preproc, path, tmp.file, as.integer(header$line.counter)))
   }
 
-  col.types = str_replace_all(header$col.types, "factor", "character")
+  col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
 
   if (data.reader == "data.table") {
     st3 = g({
@@ -65,8 +65,8 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
     })
   } else {
     st3 = g({
-      col.types = str_replace_all(col.types, "numeric", "double")
-      col.types = str_replace_all(col.types, "integer", "double")
+      col.types = stri_replace_all(col.types, fixed = "numeric", "double")
+      col.types = stri_replace_all(col.types, fixed = "integer", "double")
       col.types = collapse(vcapply(col.types, function(x) substr(x, 1L, 1L)), sep = "")
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
         escape_backslash = TRUE, escape_double = FALSE)

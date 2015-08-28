@@ -1,9 +1,24 @@
-#' @export
+#' @title Write ARFF data.frame to ARFF file.
 #'
+#' @description
+#' Internally uses \code{\link{write.table}} and is therefore not much faster
+#' than RWeka's \code{\link[RWeka]{write.arff}}.
+#'
+#' @param x [\code{data.frame}]\cr
+#'   Data to write to disk.
+#' @param path [\code{character(1)}]\cr
+#'   Path to ARFF file with write access.
+#'   Existing files will not be overwritten.
+#' @param relation [\code{character(1)}]\cr
+#'   Name of the relation in the ARFF file.
+#'   Default is to guess it from the object name.
+#' @return Nothing.
+#' @export
 writeARFF = function (x, path, relation = deparse(substitute(x))) {
   assertDataFrame(x)
   assertPathForOutput(path)
   assertString(relation)
+
   handle = file(path, "wb")
   on.exit(close(handle))
   eol = "\n"
@@ -42,5 +57,6 @@ writeARFF = function (x, path, relation = deparse(substitute(x))) {
   }
   writeLines("@data", handle)
   write.table(x, file = handle, row.names = FALSE, col.names = FALSE, na = "?")
+  invisible(NULL)
 }
 
