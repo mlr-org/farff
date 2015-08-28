@@ -21,7 +21,7 @@ and here
 
 http://weka.wikispaces.com/ARFF
 
-## Why farff? RWeka::read.arff and RWeka::write.arff already exist?
+## RWeka's read.arff and write.arff already exist?
 
 * The java dependency is annoying
 * The I/O code in RWeka is pretty slow, at least the reading of files in farff is much faster.
