@@ -4,6 +4,9 @@
 #' Internally uses \code{\link{write.table}} and is therefore not much faster
 #' than RWeka's \code{\link[RWeka]{write.arff}}.
 #'
+#' Note: Logical columns in R are converted to categorical attributes in ARFF
+#' with levels \dQuote{TRUE} and \dQuote{FALSE}.
+#'
 #' @param x [\code{data.frame}]\cr
 #'   Data to write to disk.
 #' @param path [\code{character(1)}]\cr
@@ -42,7 +45,6 @@ writeARFF = function (x, path, relation = deparse(substitute(x))) {
       lev = squote(levels(coldat))
       type = paste0("{", collapse(lev, ","), "}")
     } else if (is.logical(coldat)) {
-      # FIXME: doc that this converions is done!
       type = "{FALSE, TRUE}"
       x[, cn] = as.factor(x[, cn])
     } else if (inherits(x[, cn], "Date")) {
