@@ -2,16 +2,7 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #include <ctype.h>
-
-/* FIXME: this copy paste function is stupid! */
-int rd_is_empty(const char *s) {
-  while (*s != '\0') {
-    if (!isspace(*s))
-      return 0;
-    s++;
-  }
-  return 1;
-}
+#include "tools.h"
 
 void rd_convert_line(char s[], char t[]) {
   int i = 0;
@@ -93,7 +84,7 @@ SEXP c_rd_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
 
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
     rd_convert_line(line_buf_1, line_buf_2);
-    if (!rd_is_empty(line_buf_2))
+    if (!is_empty(line_buf_2))
       fputs(line_buf_2, handle_out);
   }
   fclose(handle_in);
