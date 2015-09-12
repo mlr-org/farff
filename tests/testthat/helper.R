@@ -2,6 +2,14 @@ library(checkmate)
 # INST_ARFF_DIR = file.path("..", "..", "inst", "arffs")
 INST_ARFF_DIR = file.path(system.file(package = "farff"), "arffs")
 
+# if on travis, use our encrypted key, which is now in an OS envir var
+if (identical(Sys.getenv("TRAVIS"), "true")) {
+  apikey = Sys.getenv("OPENMLAPIKEY")
+  setOMLConfig(apikey = apikey)
+} else {
+  source("../../OPENMLAPIKEY.R")
+}
+
 compareRWeka = function(dir, path, data.reader) {
   path2 = file.path(dir, path)
   d1 = readARFF(path2, data.reader = data.reader)

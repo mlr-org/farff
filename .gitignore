@@ -1,5 +1,6 @@
 farff.Rcheck
 farff_*.tar.gz
+OPENMLAPIKEY.R
 
 .Rproj.user
 *.Rproj
