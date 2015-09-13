@@ -4,7 +4,7 @@ if (identical(Sys.getenv("TRAVIS"), "true")) {
 
   library(OpenML)
   dchars = listOMLDataSets()
-  dchars2 = subset(dchars, status == "active" & NumberOfInstances < 4000 & NumberOfFeatures < 80)
+  dchars2 = subset(dchars, status == "active" & NumberOfInstances < 400 & NumberOfFeatures < 20)
   dids = dchars2$did
 
 
@@ -21,7 +21,7 @@ if (identical(Sys.getenv("TRAVIS"), "true")) {
 
   for (dreader in c("readr", "data.table")) {
     for (did in dids) {
-      print(did)
+      message(did)
       if (dreader == "readr" || did %nin% dids.datatable.broken)
         compareOML(did, data.reader = dreader)
     }
