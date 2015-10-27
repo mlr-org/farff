@@ -12,3 +12,4 @@ src/*.so
 src/*.o
 man/*
 
+batchtest/farff_batchtest-files/
