@@ -16,14 +16,15 @@ load_all()
 # path = "/home/bischl/cos/farff/inst/arffs/house.arff"
 # path = "/home/bischl/cos/farff/inst/arffs/covtype-normalized.arff"
 # path = "/home/bischl/cos/farff/inst/arffs/kr-vs-kp.arff"
-path = "/home/bischl/cos/farff/inst/arffs/string_special_chars.arff"
+# path = "/home/bischl/cos/farff/inst/arffs/string_special_chars.arff"
+path = "/home/bischl/cos/farff/test_quotes.arff"
 
 d1 = readARFF(path, tmp.file = "/home/bischl/cos/farff/bla.arff", show.info = TRUE)
 print(d1)
 
-d2 = RWeka::read.arff(path)
-print(d2)
-expect_equal(d1, d2)
+# d2 = RWeka::read.arff(path)
+# print(d2)
+# expect_equal(d1, d2)
 
 # mb = microbenchmark(
 #   readARFF(path, show.info = FALSE),

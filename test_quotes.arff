@@ -1,0 +1,12 @@
+
+@relation anneal
+
+@attribute carbon {'\'B1of3\'','\'B2of3\'','\'B3of3\''}
+
+@data
+
+'\'B1of3\''
+'\'B3of3\''
+
+
+
