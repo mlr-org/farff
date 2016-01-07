@@ -19,7 +19,8 @@ if (identical(Sys.getenv("TRAVIS"), "true")) {
   #   but now data.table produces \\\"
   dids.datatable.broken = c(374, 376,  379,  380)
 
-  for (dreader in c("readr", "data.table")) {
+  # for (dreader in c("readr", "data.table")) {
+  for (dreader in c("readr")) {
     for (did in dids) {
       message(did)
       if (dreader == "readr" || did %nin% dids.datatable.broken)

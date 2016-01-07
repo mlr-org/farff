@@ -6,7 +6,8 @@ if (!identical(Sys.getenv("TRAVIS"), "true")) { # don't run this on travis
   
   # these dids work for RWeka but not for farff
   bad = c(119,350,386,391,397,401,572)
-  for (reader in c("RWeka", "farff.readr", "farff.data.table")) {
+  # for (reader in c("RWeka", "farff.readr", "farff.data.table")) {
+  for (reader in c("RWeka", "farff.readr")) {
     for(bad.did in bad) {
       arffIsDataFrame(bad.did, reader)
     }
