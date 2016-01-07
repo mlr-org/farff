@@ -3,10 +3,12 @@
 #' @description
 #' Implementation of a fast ARFF parser that produces consistent results compared to the reference
 #' implementation in \code{RWeka}.
-#' The \dQuote{DATA} section is read with either reader::read_delim from reader or fread from
-#' data.table.
+#' The \dQuote{DATA} section is read with reader::read_delim. 
 #'
 #' Note: Integer feature columns in ARFF files are parsed as numeric columns into R.
+#'
+#' Note: Sparse ARFF format is currently unsupported. The function will produce an informative error
+#' message in that case.
 #'
 #' @details
 #' ARFF parsers are already available in package RWeka in \code{\link[RWeka]{read.arff}} and package
@@ -67,17 +69,18 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
 
   first.data.line = readLines(tmp.file, n = 1L)
-  if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*")[1L ,1L]))
+  if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
     stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
       first.data.line) 
 
   if (data.reader == "data.table") {
-    st3 = g({
-      dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
-        colClasses = col.types,
-        data.table = FALSE,
-        )
-    })
+    ## removed for now until we can ensure data.table support 
+    # st3 = g({
+    #   dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
+    #     colClasses = col.types,
+    #     data.table = FALSE,
+    #     )
+    # })
   } else {
     st3 = g({
       col.types = stri_replace_all(col.types, fixed = "numeric", "double")

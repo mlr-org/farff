@@ -1,10 +1,11 @@
 Package: farff
-Title: A faster ARFF file reader and writer.
-Description: Reads and writes ARFF files, without the Java dependency that RWeka enforces. 
-  Also much faster. Uses readr and data.table as parser backends for the data section of the ARFF file.
-  Consistency with RWeka is tested on Github an Travis CI with hundreds of ARFF files from OpenML. 
+Title: A faster ARFF file reader and writer
+Description: Reads and writes ARFF files, without the Java dependency that RWeka
+    enforces. Also much faster. Uses readr as parser backend for
+    the data section of the ARFF file. Consistency with RWeka is tested on Github an
+    Travis CI with hundreds of ARFF files from OpenML.
 Authors@R: c(person("Bernd", "Bischl", email = "bernd_bischl@gmx.net",
-    role = c("aut", "cre"))) 
+    role = c("aut", "cre")))
 BugReports: https://github.com/mlr-org/farff/issues
 License: BSD_2_clause + file LICENSE
 Encoding: UTF-8
@@ -12,7 +13,6 @@ Roxygen: list(wrap = FALSE)
 Imports:
     BBmisc,
     checkmate,
-    data.table,
     stringi,
     readr
 Suggests:
@@ -22,3 +22,4 @@ Suggests:
 LazyData: yes
 ByteCompile: yes
 Version: 1.0
+RoxygenNote: 5.0.1
