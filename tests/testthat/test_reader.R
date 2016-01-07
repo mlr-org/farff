@@ -5,7 +5,7 @@ if (!identical(Sys.getenv("TRAVIS"), "true")) { # don't run this on travis
   library(OpenML)
   
   # these dids work for RWeka but not for farff
-  bad = c(119,350,386,391,397,401,572)
+  bad = c(119, 572)
   # for (reader in c("RWeka", "farff.readr", "farff.data.table")) {
   for (reader in c("RWeka", "farff.readr")) {
     for(bad.did in bad) {
