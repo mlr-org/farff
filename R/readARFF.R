@@ -36,7 +36,7 @@
 
 readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE) {
   assertFile(path, access = "r")
-  assertChoice(data.reader, c("readr", "data.table"))
+  assertChoice(data.reader, c("readr"))
   assertPathForOutput(tmp.file, overwrite = TRUE)
   assertFlag(show.info)
 
@@ -65,6 +65,11 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
   }
 
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
+
+  first.data.line = readLines(tmp.file, n = 1L)
+  if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*")[1L ,1L]))
+    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
+      first.data.line) 
 
   if (data.reader == "data.table") {
     st3 = g({
