@@ -7,9 +7,10 @@ INST_ARFF_DIR = file.path(system.file(package = "farff"), "arffs")
 if (identical(Sys.getenv("TRAVIS"), "true")) {
   apikey = Sys.getenv("OPENMLAPIKEY")
   setOMLConfig(apikey = apikey)
-} else {
-  source("../../OPENMLAPIKEY.R")
 }
+# else {
+#   source("../../OPENMLAPIKEY.R")
+# }
 
 compareRWeka = function(dir, path, data.reader) {
   path2 = file.path(dir, path)
