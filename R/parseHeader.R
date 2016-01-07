@@ -56,7 +56,6 @@ parseHeader = function(path) {
     line = readLines(handle, n = 1L)
     line.counter = line.counter + 1L
   }
-  # FIXME: these lines are old from foreign, must be changed
   if (length(line) == 0L)
     stop("Missing data section.")
   # check that we dont have sparse format. the line after @DATA then would be: "   {*}  "
@@ -70,8 +69,10 @@ parseHeader = function(path) {
   if (is.null(colnames))
     stop("Missing attribute section.")
 
+  # remove some chars from the colnames, apparently RWeka strips these as well 
   col.names = stri_trim(stri_replace_all(col.names, fixed = "\"", ""))
   col.names = stri_trim(stri_replace_all(col.names, fixed = "'", ""))
+  col.names = stri_trim(stri_replace_all(col.names, fixed = "\\", ""))
 
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
