@@ -9,8 +9,7 @@ test_that("quick test with small arffs", {
     compareRWeka(INST_ARFF_DIR, "anneal.arff", data.reader = dreader)
     compareRWeka(INST_ARFF_DIR, "kr-vs-kp.arff", data.reader = dreader)
     compareRWeka(INST_ARFF_DIR, "quotes_in_factor_levels.arff", data.reader = dreader)
-    # FIXME:
-    # compareRWeka(INST_ARFF_DIR, "many_types.arff", data.reader = dreader)
+    compareRWeka(INST_ARFF_DIR, "many_types.arff", data.reader = dreader)
   }
 })
 
