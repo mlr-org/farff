@@ -56,10 +56,17 @@ parseHeader = function(path) {
     line = readLines(handle, n = 1L)
     line.counter = line.counter + 1L
   }
-
   # FIXME: these lines are old from foreign, must be changed
   if (length(line) == 0L)
     stop("Missing data section.")
+  # check that we dont have sparse format. the line after @DATA then would be: "   {*}  "
+  repeat {
+    first.data.line = trimws(readLines(handle, n = 1L))
+    if (first.data.line != "") break
+  }
+  if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
+    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s", 
+      first.data.line) 
   if (is.null(colnames))
     stop("Missing attribute section.")
 

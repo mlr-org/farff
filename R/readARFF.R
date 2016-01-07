@@ -56,7 +56,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
 
   st1 = g({header = parseHeader(path)})
   # print(header)
-
+  
   on.exit({unlink(tmp.file)})
   if (data.reader == "data.table")  {
     requirePackages("data.table")
@@ -67,11 +67,6 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
   }
 
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
-
-  first.data.line = readLines(tmp.file, n = 1L)
-  if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
-    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
-      first.data.line) 
 
   if (data.reader == "data.table") {
     ## removed for now until we can ensure data.table support 
