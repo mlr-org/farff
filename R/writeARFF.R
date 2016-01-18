@@ -58,7 +58,7 @@ writeARFF = function (x, path, relation = deparse(substitute(x))) {
     writeLines(line, handle, sep = eol)
   }
   writeLines("@data", handle)
-  write.table(x, file = handle, row.names = FALSE, col.names = FALSE, na = "?")
+  write.table(x, file = handle, row.names = FALSE, col.names = FALSE, na = "?", sep = ",")
   invisible(NULL)
 }
 
