@@ -36,7 +36,7 @@
 
 # FIXME: choose readr only with string columns
 
-readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE) {
+readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE, ...) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr"))
   assertPathForOutput(tmp.file, overwrite = TRUE)
@@ -82,7 +82,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
       col.types = stri_replace_all(col.types, fixed = "integer", "double")
       col.types = collapse(vcapply(col.types, function(x) substr(x, 1L, 1L)), sep = "")
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
-        escape_backslash = TRUE, escape_double = FALSE)
+        escape_backslash = TRUE, escape_double = FALSE, ...)
       # print(problems(dat))
       dat = as.data.frame(dat)
     })
