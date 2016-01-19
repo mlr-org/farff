@@ -13,8 +13,8 @@ parseHeader = function(path) {
     if (!stri_detect(line, regex = "^\\s*@(?i)relation") &&
       !stri_detect(line, regex = "^\\s*%.*") &&
       stri_trim(line) != "" ) {
-      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|string|date|\\{.*\\})"
-      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|string|date|\\{.*\\})"
+      regex1 = "\\s*(?i)@attribute\\s+(\\S+)\\s+(real|numeric|integer|string|date|relational|\\{.*\\})"
+      regex2 = "\\s*(?i)@attribute\\s+'(.*)'\\s+(real|numeric|integer|string|date|relational|\\{.*\\})"
       m = stri_match_first_regex(line, regex1)
       if (is.na(m[1L, 1L]))
         m = stri_match_first_regex(line, regex2)
@@ -45,6 +45,9 @@ parseHeader = function(path) {
         ctype = "numeric"
       } else if (ctype.ci == "integer") {
         ctype = "integer"
+      } else if (ctype.ci == "relational") {
+        # FIXME: allow multi-instance here: the header '@attribute var relational' to '@end var' might contain several multi-instance variables
+        stopf("Type 'relational' currently not implemented.")
       } else {
         stopf("Invalid type found on line %i:\n%s", line.counter, line)
       }

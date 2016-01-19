@@ -10,7 +10,9 @@ if (identical(Sys.getenv("TRAVIS"), "true")) {
 
   # FIXME: data set 292 is in sparse format. this is valid but we cannot parse it.
   dids = setdiff(dids, c(292))
-
+  
+  # FIXME: data set has multi-instance observations. Currently, we cannot parse it but we throw an error and have a unit test for this.
+  dids = setdiff(dids, c(1438))
 
   # FIXME: there are quoting issues in data.table here. if we have doubles quotes ", it is unclear
   # how data.table should get them fed into after preproc.
