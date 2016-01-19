@@ -21,7 +21,10 @@ compareRWeka = function(dir, path, data.reader) {
   outfile = tempfile()
   writeARFF(d2, path = outfile)
   d3 = RWeka::read.arff(outfile)
-  expect_equal(d2, d3, info = sprintf("Error with reader %s in file (after writeARFF): %s",
+  expect_equal(d2, d3, info = sprintf("Error with RWeka reader in file (after writeARFF): %s",
+    path))
+  d4 = readARFF(outfile, data.reader = data.reader)
+  expect_equal(d3, d4, info = sprintf("Error with reader %s in file (after writeARFF): %s",
     data.reader, path))
 }
 
@@ -39,8 +42,11 @@ compareOML = function(data.id, data.reader) {
     outfile = tempfile()
     writeARFF(d2, path = outfile)
     d3 = RWeka::read.arff(outfile)
-    expect_equal(d2, d3, info = sprintf("Error with reader %s in OML data id (after writeARFF):  %i",
-        data.reader, data.id))
+    expect_equal(d2, d3, info = sprintf("Error with RWeka reader in OML data id (after writeARFF):  %i",
+        data.id))
+    d4 = readARFF(outfile, data.reader = data.reader)
+    expect_equal(d3, d4, info = sprintf("Error with reader %s in OML data id (after writeARFF):  %i",
+      data.reader, data.id))
   })
 }
 
