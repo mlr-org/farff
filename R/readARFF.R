@@ -10,6 +10,8 @@
 #' Note: Sparse ARFF format is currently unsupported. The function will produce an informative error
 #' message in that case.
 #'
+#' Note: ARFF attributes of type \dQuote{relational}, e.g., for multi-instance data, are currently not supported.
+#'
 #' @details
 #' ARFF parsers are already available in package RWeka in \code{\link[RWeka]{read.arff}} and package
 #' \code{foreign} in \code{\link[foreign]{read.arff}}. The RWeka parser requires \code{Java} and
