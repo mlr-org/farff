@@ -12,15 +12,21 @@
 #'   Data to write to disk.
 #' @param path [\code{character(1)}]\cr
 #'   Path to ARFF file with write access.
-#'   Existing files will not be overwritten.
+#'   Existing files will not be overwritten unless \code{overwrite} is \code{TRUE}.
+#' @param overwrite [\code{logical(1)}]\cr
+#'   Should \code{path} be overwritten if it already exists?
+#'   Default is \code{FALSE}.
 #' @param relation [\code{character(1)}]\cr
 #'   Name of the relation in the ARFF file.
 #'   Default is to guess it from the object name.
 #' @return Nothing.
 #' @export
-writeARFF = function (x, path, relation = deparse(substitute(x))) {
+writeARFF = function(x, path,
+  overwrite = FALSE,
+  relation = deparse(substitute(x))) {
   assertDataFrame(x, col.names = "unique", min.rows = 1L, min.cols = 1L)
-  assertPathForOutput(path)
+  assertPathForOutput(path, overwrite = overwrite)
+  assertFlag(overwrite)
   assertString(relation)
 
   handle = file(path, "wb")
