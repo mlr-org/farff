@@ -29,10 +29,13 @@ parseHeader = function(path) {
 
       if (ctype.ci == "date") {
         ctype = "character"
-        cdfmt = if (length(line) > 3L)
+        cdfmt = if (length(line) > 3L) {
+          # if date format is specified covert it to POSIX standard
           ISO_8601_to_POSIX_datetime_format(line[4L])
-        else
+        } else {
+          # otherwise simply use POSIX
           "%Y-%m-%d %H:%M:%S"
+        }
       } else if (ctype.ci == "relational") {
         stop("Type 'relational' currently not implemented.")
       } else if (grepl("\\{.*", ctype.ci)) {
@@ -67,12 +70,12 @@ parseHeader = function(path) {
     if (first.data.line != "") break
   }
   if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
-    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s", 
-      first.data.line) 
+    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
+      first.data.line)
   if (is.null(colnames))
     stop("Missing attribute section.")
 
-  # remove some chars from the colnames, apparently RWeka strips these as well 
+  # remove some chars from the colnames, apparently RWeka strips these as well
   col.names = stri_trim(stri_replace_all(col.names, fixed = "\"", ""))
   col.names = stri_trim(stri_replace_all(col.names, fixed = "'", ""))
   col.names = stri_trim(stri_replace_all(col.names, fixed = "\\", ""))
