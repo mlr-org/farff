@@ -55,7 +55,7 @@ void dt_convert_line(char s[], char t[]) {
          if (s[i+1] == '\n')
            i += 2;
          else
-           i+1;
+           i += 1;
          t[j++] = '\n';
          break;
         default: /*copy slot */
