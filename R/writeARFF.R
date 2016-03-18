@@ -81,7 +81,7 @@ writeARFF = function(x, path,
     writeLines(line, handle, sep = eol)
   }
   writeLines("@data", handle)
-  chunks = BBmisc::chunk(seq(nrow(x)), chunk.size = chunk.size)
+  chunks = BBmisc::chunk(seq(nrow(x)), chunk.size = chunk.size, shuffle = FALSE)
   for (chunk in chunks) {
     suppressWarnings(write.table(x[chunk, , drop = FALSE], file = handle, row.names = FALSE, col.names = FALSE, na = "?", sep = ","))
   }
