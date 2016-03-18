@@ -54,11 +54,19 @@ writeARFF = function(x, path,
     } else if (is.logical(coldat)) {
       type = "{FALSE, TRUE}"
       x[, cn] = as.factor(x[, cn])
-    } else if (inherits(x[, cn], "Date")) {
-      type = "date \"yyyy-MM-dd\""
-      x[, cn] = format(x[, cn])
+    # } else if (inherits(x[, cn], "Date")) {
+    #   type = "date \"yyyy-MM-dd\""
+    #   x[, cn] = format(x[, cn])
     } else if (inherits(x[, cn], "POSIXt")) {
-      type = "date \"yyyy-MM-dd HH:mm:ss\""
+      # check which format to use
+      #FIXME: there needs to be a nicer way to extract the format from a POSIXct format
+      ex.date = as.character(x[1, cn])
+      ex.date = gsub("-", " ", ex.date)
+      if (length(strsplit(ex.date, split = " ")[[1L]]) == 3L) {
+        type = "date \"yyyy-MM-dd\""
+      } else {
+        type = "date \"yyyy-MM-dd HH:mm:ss\""
+      }
       x[, cn] = format(x[, cn])
     }
     line = sprintf("@attribute %s %s", squote(cn), type)

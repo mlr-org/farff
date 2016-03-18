@@ -9,7 +9,8 @@ test_that("quick test with small arffs", {
     compareRWeka(INST_ARFF_DIR, "anneal.arff", data.reader = dreader)
     compareRWeka(INST_ARFF_DIR, "kr-vs-kp.arff", data.reader = dreader)
     compareRWeka(INST_ARFF_DIR, "quotes_in_factor_levels.arff", data.reader = dreader)
-    compareRWeka(INST_ARFF_DIR, "many_types.arff", data.reader = dreader)
+    #compareRWeka(INST_ARFF_DIR, "many_types.arff", data.reader = dreader)
+    compareRWeka(INST_ARFF_DIR, "dates.arff", data.reader = dreader)
 
     expect_error(readARFF(path = paste(INST_ARFF_DIR, "dataset_1438_accelerometer.arff", sep = "/"), data.reader = dreader),
       "Type 'relational' currently not implemented.")

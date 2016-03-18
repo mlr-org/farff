@@ -29,12 +29,17 @@ parseHeader = function(path) {
 
       if (ctype.ci == "date") {
         ctype = "character"
-        cdfmt = if (length(line) > 3L) {
+        cdfmt = NA
+        if (!stri_detect_regex(line, "date$", case_insensitive = TRUE)) {
           # if date format is specified covert it to POSIX standard
-          ISO_8601_to_POSIX_datetime_format(line[4L])
+          #FIXME: this is ugly, but works. Refactor on occasion
+          splits = stri_split_regex(line, "date", case_insensitive = TRUE)[[1L]]
+          dfmt = splits[length(splits)]
+          dfmt = stri_trim(gsub("\"", "", dfmt))
+          cdfmt = ISO_8601_to_POSIX_datetime_format(dfmt)
         } else {
           # otherwise simply use POSIX
-          "%Y-%m-%d %H:%M:%S"
+          cdfmt = "%Y-%m-%d %H:%M:%S"
         }
       } else if (ctype.ci == "relational") {
         stop("Type 'relational' currently not implemented.")
@@ -82,11 +87,5 @@ parseHeader = function(path) {
 
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
-
-  # FIXME: this is done for dates? do we have such a dataset?
-  # if (any(ind = which(!is.na(col_dfmts))))
-    # for (i in ind) data[i] = as.data.frame(strptime(data[[i]],
-        # col_dfmts[i]))
-  # data
 }
 

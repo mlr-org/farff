@@ -66,7 +66,6 @@ readARFF = function(path, data.reader = "readr",
   }
 
   st1 = g({header = parseHeader(path)})
-  # print(header)
 
   on.exit({unlink(tmp.file)})
   if (data.reader == "data.table")  {
@@ -94,12 +93,10 @@ readARFF = function(path, data.reader = "readr",
       col.types = collapse(vcapply(col.types, function(x) substr(x, 1L, 1L)), sep = "")
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
         escape_backslash = TRUE, escape_double = FALSE, ...)
-      # print(problems(dat))
       dat = as.data.frame(dat)
     })
   }
   colnames(dat) = header$col.names
-  # print(str(dat))
 
   st4 = g({
   for (i in 1:ncol(dat)) {
@@ -114,6 +111,13 @@ readARFF = function(path, data.reader = "readr",
     }
   }
   })
+
+  # transform date columns to corresponding POSIXct format
+  date.inds = which(!is.na(header$col.dfmts))
+  for (i in date.inds) {
+    dat[[i]] = strptime(dat[[i]], format = header$col.dfmts[i])
+  }
+
   if (show.info)
     messagef("header: %f; preproc: %f; data: %f; postproc: %f; total: %f",
       st1[3L], st2[3L], st3[3L], st4[3L], st1[3L] + st2[3L] + st3[3L] + st4[3L])
