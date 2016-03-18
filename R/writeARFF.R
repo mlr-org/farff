@@ -19,7 +19,7 @@
 #' @return Nothing.
 #' @export
 writeARFF = function (x, path, relation = deparse(substitute(x))) {
-  assertDataFrame(x)
+  assertDataFrame(x, col.names = "unique", min.rows = 1L, min.cols = 1L)
   assertPathForOutput(path)
   assertString(relation)
 
