@@ -3,7 +3,7 @@
 #' @description
 #' Implementation of a fast ARFF parser that produces consistent results compared to the reference
 #' implementation in \code{RWeka}.
-#' The \dQuote{DATA} section is read with reader::read_delim. 
+#' The \dQuote{DATA} section is read with reader::read_delim.
 #'
 #' Note: Integer feature columns in ARFF files are parsed as numeric columns into R.
 #'
@@ -30,19 +30,24 @@
 #'   Path to TEMP output file, where this result is stored.
 #'   The file is deleted on exit.
 #'   Default is \code{tempfile()}.
+#' @param convert.to.logicals [\code{logical(1)}]\cr
+#'   Should factors with values T or F be converted to logicals? (RWeka does this be default).
+#'   Default is \code{TRUE}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Default is \code{TRUE}
 #' @return [\code{data.frame}].
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
-
 # FIXME: choose readr only with string columns
-
-readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.info = TRUE, ...) {
+readARFF = function(path, data.reader = "readr",
+  tmp.file = tempfile(),
+  convert.to.logicals = TRUE,
+  show.info = TRUE, ...) {
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr"))
   assertPathForOutput(tmp.file, overwrite = TRUE)
-  assertFlag(show.info)
+  assertFlag(convert.to.logicals, na.ok = FALSE)
+  assertFlag(show.info, na.ok = FALSE)
 
   if (show.info)
     messagef("Parse with reader=%s : %s", data.reader, path)
@@ -58,7 +63,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
 
   st1 = g({header = parseHeader(path)})
   # print(header)
-  
+
   on.exit({unlink(tmp.file)})
   if (data.reader == "data.table")  {
     requirePackages("data.table")
@@ -71,7 +76,7 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
 
   if (data.reader == "data.table") {
-    ## removed for now until we can ensure data.table support 
+    ## removed for now until we can ensure data.table support
     # st3 = g({
     #   dat = fread(tmp.file, header = FALSE, sep = ",", stringsAsFactors = FALSE,
     #     colClasses = col.types,
@@ -98,11 +103,10 @@ readARFF = function(path, data.reader = "readr", tmp.file = tempfile(), show.inf
     if (ct == "factor") {
       clevs = header$col.levels[[i]]
       # RWEKA parses this to logical
-      # FIXME: DOC THIS!
-      if (identical(clevs, c("TRUE", "FALSE")) || identical(clevs, c("FALSE", "TRUE")))
-        dat[,i] = as.logical(dat[,i])
+      if (convert.to.logicals && (identical(clevs, c("TRUE", "FALSE")) || identical(clevs, c("FALSE", "TRUE"))))
+        dat[, i] = as.logical(dat[, i])
       else
-        dat[,i] = factor(dat[,i], levels = clevs)
+        dat[, i] = factor(dat[, i], levels = clevs)
     }
   }
   })
