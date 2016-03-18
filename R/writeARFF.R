@@ -4,7 +4,8 @@
 #' Internally uses \code{\link{write.table}} and is therefore not much faster
 #' than RWeka's \code{\link[RWeka]{write.arff}}.
 #'
-#' Note: Logical columns in R are converted to categorical attributes in ARFF
+#' @note
+#' Logical columns in R are converted to categorical attributes in ARFF
 #' with levels \dQuote{TRUE} and \dQuote{FALSE}.
 #'
 #' @param x [\code{data.frame}]\cr
