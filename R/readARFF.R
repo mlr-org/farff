@@ -1,29 +1,31 @@
 #' @title Read ARFF file into data.frame.
 #'
 #' @description
-#' Implementation of a fast ARFF parser that produces consistent results compared to the reference
-#' implementation in \code{RWeka}.
-#' The \dQuote{DATA} section is read with reader::read_delim.
+#' Implementation of a fast \href{http://www.cs.waikato.ac.nz/ml/weka/arff.html}{ARFF}
+#' parser that produces consistent results compared to the reference implementation
+#' in \pkg{RWeka}. The \dQuote{DATA} section is read with \code{\link[readr]{read_delim}}.
 #'
-#' Note: Integer feature columns in ARFF files are parsed as numeric columns into R.
-#'
-#' Note: Sparse ARFF format is currently unsupported. The function will produce an informative error
-#' message in that case.
-#'
-#' Note: ARFF attributes of type \dQuote{relational}, e.g., for multi-instance data, are currently not supported.
+#' @note
+#' \itemize{
+#'   \item{Integer feature columns in ARFF files are parsed as numeric columns into R.}
+#'   \item{Sparse ARFF format is currently unsupported. The function will produce an
+#'   informative error message in that case.}
+#'   \item{ARFF attributes of type \dQuote{relational}, e.g., for multi-instance data,
+#'   are currently not supported.}
+#' }
 #'
 #' @details
-#' ARFF parsers are already available in package RWeka in \code{\link[RWeka]{read.arff}} and package
-#' \code{foreign} in \code{\link[foreign]{read.arff}}. The RWeka parser requires \code{Java} and
-#' \code{rJava}, a dependency which is notoriously hard to configure for users in R. It is also quite slow.
-#' The parser in foreign in written in pure R, slow and not fully consistent with the reference
-#' implementation in \code{RWeka}.
+#' ARFF parsers are already available in package RWeka in \code{\link[RWeka]{read.arff}}
+#' and package \code{foreign} in \code{\link[foreign]{read.arff}}. The RWeka parser
+#' requires \code{Java} and \code{rJava}, a dependency which is notoriously hard to
+#' configure for users in R. It is also quite slow. The parser in foreign in written
+#' in pure R, slow and not fully consistent with the reference implementation in \code{RWeka}.
 #'
 #' @param path [\code{character(1)}]\cr
 #'   Path to ARFF file with read access.
 #' @param data.reader [\code{character(1)}]\cr
 #'   Package back-end to parse ARFF data section with.
-#'   Either \dQuote{readr} or \dQuote{data.table}
+#'   At the moment only \code{readr} is supported.
 #'   Default is \dQuote{readr}.
 #' @param tmp.file [\code{character(1)}]\cr
 #'   The ARFF file must be preprocessed a bit, before it can be fed to the \code{data.reader}.
@@ -31,10 +33,12 @@
 #'   The file is deleted on exit.
 #'   Default is \code{tempfile()}.
 #' @param convert.to.logicals [\code{logical(1)}]\cr
-#'   Should factors with values T or F be converted to logicals? (RWeka does this be default).
+#'   Should factors with values T or F be converted to logicals? (RWeka does this by default).
 #'   Default is \code{TRUE}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Default is \code{TRUE}
+#' @param ... [any]
+#'   Further parameters passed to \code{\link[readr]{read_delim}}.
 #' @return [\code{data.frame}].
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
@@ -46,8 +50,8 @@ readARFF = function(path, data.reader = "readr",
   assertFile(path, access = "r")
   assertChoice(data.reader, c("readr"))
   assertPathForOutput(tmp.file, overwrite = TRUE)
-  assertFlag(convert.to.logicals, na.ok = FALSE)
-  assertFlag(show.info, na.ok = FALSE)
+  assertFlag(convert.to.logicals)
+  assertFlag(show.info)
 
   if (show.info)
     messagef("Parse with reader=%s : %s", data.reader, path)
