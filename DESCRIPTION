@@ -2,7 +2,7 @@ Package: farff
 Title: A faster ARFF file reader and writer
 Description: Reads and writes ARFF files, without the Java dependency that RWeka
     enforces. Also much faster. Uses readr as parser backend for
-    the data section of the ARFF file. Consistency with RWeka is tested on Github an
+    the data section of the ARFF file. Consistency with RWeka is tested on Github and
     Travis CI with hundreds of ARFF files from OpenML.
 Authors@R: c(person("Bernd", "Bischl", email = "bernd_bischl@gmx.net",
     role = c("aut", "cre")), person("Jakob", "Bossek", email = "j.bossek@gmail.com", role = c("aut")))
