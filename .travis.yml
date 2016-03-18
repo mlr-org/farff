@@ -1,26 +1,23 @@
 language: r
-env:
-    global:
-        - _R_CHECK_TIMINGS_=0
+sudo: false
 
-apt_packages:
-    - r-cran-rjava
+cache:
+  packages: true
+
+env:
+  global:
+  - secure: uKNf/tQg+EA2TL36ZWp2l6faqDGwebilTHDqRnTBda/GUM+ZFyVoSKbi0ua191x+gEXc1RtJ3JGruaa2Q3xg+YhLajUGUHN4Xd+U90sB4zvj+0RcdL/pUkvrfuH6DzY8gLgWd9QWN318NS/lXJHSY7IBB7Yo4rUfF/ubjzqWYUtI6soUwdCXanWHgO3ySvC9JWogCF6K15wngEb/z9y8eUKqhsa6qbJ2tb2PYdp2YHLt2IdF8sfhLoG/rkAJJ+Elb5JDDVabeIarwh+sai61oewP1s4QJNav8EAsOnx+6U05576/HFNHXweyv8Dtrtf4M9sgjnweHPVJuAxZXjm1qSHOrhBABF8QzJgU/jotb87X8sJ40p+7k0OsBwuLB6yd6yEtCYgWJmhGpg5pMP6C2RfVHDNGv6scQ64N6ZrjntIBlW4UG6roEh4Vy8O0Ui0R2S8bm1W9z8s0JoNtWVVLfd7zcs3vlCd8xw7u4fLAQcpi6JwKB4rjysPNiLmjSzoYxEU5/BrHpKQLGU23czZrUcmGtALWJjtmsihRBg0lSWnitCrSxVU+bAL1KYw3RXyPUWCRJ3JiBqU1M8yXescDpOTG1K+WFzDe44fzetxE/loh77sgOTGhJtAQtoW5KWEOEQ+bF9R95c6cv6cCAxuUjSyngd4YTVcdHz2T17/THbc=
+
 r_github_packages:
-    - OpenML/r
-before_install:
-    - sudo R CMD javareconf
-before_script:
-    - curl -L https://raw.githubusercontent.com/mllg/travis-r-tools/master/update-packages.r -o /tmp/update-packages.r
-    - Rscript /tmp/update-packages.r
-    - java -cp /usr/local/lib/R/site-library/RWekajars/java/weka.jar weka.core.WekaPackageManager -install-package thirdparty/XMeans1.0.4.zip
+    - jimhester/covr
+    - OpenML/openml-r
+
+after_success:
+  - Rscript -e 'library(covr);coveralls()'
+
 notifications:
   email:
     recipients:
         - bernd_bischl@gmx.net
     on_success: change
     on_failure: always
-
-env:
-  global:
-  - secure: uKNf/tQg+EA2TL36ZWp2l6faqDGwebilTHDqRnTBda/GUM+ZFyVoSKbi0ua191x+gEXc1RtJ3JGruaa2Q3xg+YhLajUGUHN4Xd+U90sB4zvj+0RcdL/pUkvrfuH6DzY8gLgWd9QWN318NS/lXJHSY7IBB7Yo4rUfF/ubjzqWYUtI6soUwdCXanWHgO3ySvC9JWogCF6K15wngEb/z9y8eUKqhsa6qbJ2tb2PYdp2YHLt2IdF8sfhLoG/rkAJJ+Elb5JDDVabeIarwh+sai61oewP1s4QJNav8EAsOnx+6U05576/HFNHXweyv8Dtrtf4M9sgjnweHPVJuAxZXjm1qSHOrhBABF8QzJgU/jotb87X8sJ40p+7k0OsBwuLB6yd6yEtCYgWJmhGpg5pMP6C2RfVHDNGv6scQ64N6ZrjntIBlW4UG6roEh4Vy8O0Ui0R2S8bm1W9z8s0JoNtWVVLfd7zcs3vlCd8xw7u4fLAQcpi6JwKB4rjysPNiLmjSzoYxEU5/BrHpKQLGU23czZrUcmGtALWJjtmsihRBg0lSWnitCrSxVU+bAL1KYw3RXyPUWCRJ3JiBqU1M8yXescDpOTG1K+WFzDe44fzetxE/loh77sgOTGhJtAQtoW5KWEOEQ+bF9R95c6cv6cCAxuUjSyngd4YTVcdHz2T17/THbc=
-
