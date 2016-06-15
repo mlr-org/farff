@@ -47,7 +47,7 @@ readARFF = function(path, data.reader = "readr",
   tmp.file = tempfile(),
   convert.to.logicals = TRUE,
   show.info = TRUE, ...) {
-  assertFile(path, access = "r")
+  assertFileExists(path, access = "r")
   assertChoice(data.reader, c("readr"))
   assertPathForOutput(tmp.file, overwrite = TRUE)
   assertFlag(convert.to.logicals)
