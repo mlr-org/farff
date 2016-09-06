@@ -20,5 +20,6 @@ notifications:
   email:
     recipients:
         - bernd_bischl@gmx.net
+        - j.bossek@gmail.com
     on_success: change
     on_failure: always

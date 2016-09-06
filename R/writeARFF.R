@@ -42,13 +42,14 @@ writeARFF = function(x, path,
   eol = "\n"
 
   squote = function(s) {
-    ifelse(is.na(s), s, sprintf("'%s'", gsub("(['\\])", "\\\\\\1",
-          s)))
+    ifelse(is.na(s), s, sprintf("'%s'", gsub("(['\\])", "\\\\\\1", s)))
   }
+
   line = sprintf("@relation '%s'", relation)
   writeLines(line, handle, sep = eol)
+
   for (cn in colnames(x)) {
-    coldat = x[,cn]
+    coldat = x[, cn]
 
     if (is.numeric(coldat)) {
       type = "numeric"
@@ -57,7 +58,7 @@ writeARFF = function(x, path,
     } else if (is.character(coldat)) {
       type = "string"
     } else if (is.factor(coldat)) {
-      lev = squote(levels(coldat))
+      lev = squote(levels(coldat)) # wrap levels in single quotes
       type = paste0("{", collapse(lev, ","), "}")
     } else if (is.logical(coldat)) {
       type = "{FALSE, TRUE}"
@@ -87,4 +88,3 @@ writeARFF = function(x, path,
   }
   invisible(NULL)
 }
-

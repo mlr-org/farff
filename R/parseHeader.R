@@ -1,3 +1,8 @@
+# Helper function to parse the header of an arff file.
+#
+# @param path [character(1)]
+#   Path to arff file.
+# @return [list] of
 parseHeader = function(path) {
   handle = file(path, "r")
   on.exit(close(handle))
@@ -36,7 +41,7 @@ parseHeader = function(path) {
           splits = stri_split_regex(line, "date", case_insensitive = TRUE)[[1L]]
           dfmt = splits[length(splits)]
           dfmt = stri_trim(gsub("\"", "", dfmt))
-          cdfmt = ISO_8601_to_POSIX_datetime_format(dfmt)
+          cdfmt = convertDatetimeFormatISO8601ToPOSIX(dfmt)
         } else {
           # otherwise simply use POSIX
           cdfmt = "%Y-%m-%d %H:%M:%S"
@@ -69,11 +74,13 @@ parseHeader = function(path) {
   }
   if (length(line) == 0L)
     stop("Missing data section.")
+
   # check that we dont have sparse format. the line after @DATA then would be: "   {*}  "
   repeat {
     first.data.line = trimws(readLines(handle, n = 1L))
     if (first.data.line != "") break
   }
+
   if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
     stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
       first.data.line)
@@ -88,4 +95,3 @@ parseHeader = function(path) {
   list(col.names = col.names, col.types = col.types, col.levels = col.levels,
     col.dfmts = col.dfmts, line.counter = line.counter)
 }
-

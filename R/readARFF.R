@@ -55,26 +55,25 @@ readARFF = function(path, data.reader = "readr",
 
   if (show.info)
     messagef("Parse with reader=%s : %s", data.reader, path)
+
   # system.time is slow when we handle small files, only do it for show.info
-  g = if (show.info) {
+  g = identity
+  if (show.info) {
     g = function(expr) {
       st = system.time(expr)
       return(st)
     }
-  } else {
-    g = identity
   }
 
+  # parse header and measure time
   st1 = g({header = parseHeader(path)})
 
   on.exit({unlink(tmp.file)})
-  if (data.reader == "data.table")  {
-    requirePackages("data.table")
-    st2 = g(.Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter)))
-  } else {
-    requirePackages("readr")
-    st2 = g(.Call(c_rd_preproc, path, tmp.file, as.integer(header$line.counter)))
-  }
+
+  # preprocess data (depends on data reader)
+  preproc.fun = if (data.reader == "data.table") c_dt_preproc else c_rd_preproc
+  requirePackages(data.reader)
+  st2 = g(.Call(preproc.fun, path, tmp.file, as.integer(header$line.counter)))
 
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
 
@@ -98,10 +97,11 @@ readARFF = function(path, data.reader = "readr",
   }
   colnames(dat) = header$col.names
 
+  # handle logical column type
   st4 = g({
-  for (i in 1:ncol(dat)) {
-    ct = header$col.types[i]
-    if (ct == "factor") {
+  for (i in seq_col(dat)) {
+    col.type = header$col.types[i]
+    if (col.type == "factor") {
       clevs = header$col.levels[[i]]
       # RWEKA parses this to logical
       if (convert.to.logicals && (identical(clevs, c("TRUE", "FALSE")) || identical(clevs, c("FALSE", "TRUE"))))
@@ -123,6 +123,3 @@ readARFF = function(path, data.reader = "readr",
       st1[3L], st2[3L], st3[3L], st4[3L], st1[3L] + st2[3L] + st3[3L] + st4[3L])
   return(dat)
 }
-
-
-
