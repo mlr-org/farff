@@ -29,7 +29,7 @@ compareRWeka = function(dir, path, data.reader) {
 }
 
 compareOML = function(data.id, data.reader) {
-  test_that(sprintf("did %i works", data.id), {
+  test_that(sprintf("data.id %i works", data.id), {
     oml.conf = getOMLConfig()
     cachedir = oml.conf$cachedir
     # read to disk, then parse
@@ -52,15 +52,15 @@ compareOML = function(data.id, data.reader) {
 
 arffIsDataFrame = function(data.id, reader) {
   #assertChoice(reader, c("farff.readr", "farff.data.table", "RWeka"))
-  test_that(sprintf("did %i works with %s", data.id, reader), {
+  test_that(sprintf("data.id %i works with %s", data.id, reader), {
     oml.conf = getOMLConfig()
     cachedir = oml.conf$cachedir
     path = OpenML:::downloadOMLObject(data.id, object = "data")$files$dataset.arff$path
-    if (reader == "farff.readr") 
+    if (reader == "farff.readr")
       d1 = readARFF(path, data.reader = "readr")
-    if (reader == "farff.data.table") 
+    if (reader == "farff.data.table")
       d1 = readARFF(path, data.reader = "data.table")
-    if (reader == "RWeka") 
+    if (reader == "RWeka")
       d1 = RWeka::read.arff(path)
     expect_class(d1, "data.frame")
     expect_true(nrow(d1)>0 & ncol(d1)>0)

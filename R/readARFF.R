@@ -93,6 +93,8 @@ readARFF = function(path, data.reader = "readr",
       dat = read_delim(tmp.file, delim = ",", col_names = FALSE, col_types = col.types,
         escape_backslash = TRUE, escape_double = FALSE, ...)
       dat = as.data.frame(dat)
+      # remove column specification, otherwise expect_equal/all.equal fails
+      dat = setAttribute(dat, "spec", NULL)
     })
   }
   colnames(dat) = header$col.names

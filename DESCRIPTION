@@ -13,7 +13,7 @@ Imports:
     BBmisc,
     checkmate (>= 1.8.0),
     stringi,
-    readr
+    readr (>= 1.0.0)
 Suggests:
     OpenML,
     RWeka,
