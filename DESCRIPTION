@@ -16,7 +16,8 @@ Imports:
     readr (>= 1.0.0)
 Suggests:
     RWeka,
-    testthat
+    testthat,
+    OpenML
 LazyData: yes
 ByteCompile: yes
 Version: 1.0
