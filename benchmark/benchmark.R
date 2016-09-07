@@ -1,3 +1,5 @@
+library(devtools)
+library(BBmisc)
 load_all("~/cos/farff/")
 library(OpenML)
 library(ggplot2)
@@ -5,22 +7,21 @@ library(reshape2)
 library(gridExtra)
 set.seed(1)
 
-# getDataIds = function(n = 100) {
-#   dchars = listOMLDataSets()
-#   dchars = subset(dchars, status == "active" &
-#    NumberOfInstances >= 5000L & NumberOfInstances <= 100000 &
-#    NumberOfFeatures >= 5L & NumberOfFeatures <= 100)
-#   dchars$size = dchars$NumberOfInstances * dchars$NumberOfFeatures
-#   dchars = sortByCol(dchars, "size", asc = TRUE)
-#   dids = dchars$did
-#   rownames(dchars) = dids
-#   ch = chunk(dids, shuffle = FALSE, n.chunks = n)
-#   dids = viapply(ch, function(x) sample(x, 1L))
-#   return(subset(dchars, dchars$did %in% dids))
-# }
+getDataIds = function(n.dsets, n.min, n.max) {
+  dchars = listOMLDataSets(c(n.min, n.max))
+  dchars = subset(dchars, status == "active" &
+   NumberOfFeatures >= 5L & NumberOfFeatures <= 100)
+  dchars$size = dchars$NumberOfInstances * dchars$NumberOfFeatures
+  dchars = sortByCol(dchars, "size", asc = TRUE)
+  dids = dchars$data.id
+  rownames(dchars) = dids
+  ch = chunk(dids, shuffle = FALSE, n.chunks = n.dsets)
+  dids = viapply(ch, function(x) sample(x, 1L))
+  return(subset(dchars, dchars$data.id %in% dids))
+}
 
-dchars = getDataIds(n = 20)
-dids = dchars$did
+dchars = getDataIds(n.dsets = 3, n.min = 100, n.max = 200)
+dids = dchars$data.id
 print(dids)
 
 # oml.conf = getOMLConfig()
