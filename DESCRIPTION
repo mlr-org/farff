@@ -15,11 +15,8 @@ Imports:
     stringi,
     readr (>= 1.0.0)
 Suggests:
-    OpenML,
     RWeka,
     testthat
-Remotes:
-    github::openml/openml-r
 LazyData: yes
 ByteCompile: yes
 Version: 1.0
