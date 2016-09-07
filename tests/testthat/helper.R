@@ -3,6 +3,7 @@ INST_ARFF_DIR = file.path(system.file(package = "farff"), "arffs")
 
 # if on travis, use our encrypted key, which is now in an OS envir var
 if (identical(Sys.getenv("TRAVIS"), "true")) {
+  library(OpenML)
   apikey = Sys.getenv("OPENMLAPIKEY")
   setOMLConfig(apikey = apikey)
 }
