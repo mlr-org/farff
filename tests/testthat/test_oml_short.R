@@ -1,3 +1,5 @@
+if (identical(Sys.getenv("TRAVIS"), "true")) {
+
 context("quick test with OML data sets where problems occured before")
 
 library(OpenML)
@@ -12,3 +14,4 @@ for (dreader in c("readr")) {
   }
 }
 
+}
