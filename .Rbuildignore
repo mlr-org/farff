@@ -13,3 +13,4 @@ appveyor
 ^benchmark
 test.R
 test2.R
+attic
