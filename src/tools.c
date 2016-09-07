@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 int is_empty(const char *s) {
   while (*s != '\0') {
     if (!isspace(*s))
@@ -6,5 +8,3 @@ int is_empty(const char *s) {
   }
   return 1;
 }
-
-
