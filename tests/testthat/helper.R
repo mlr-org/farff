@@ -1,5 +1,3 @@
-library(checkmate)
-library(OpenML)
 # INST_ARFF_DIR = file.path("..", "..", "inst", "arffs")
 INST_ARFF_DIR = file.path(system.file(package = "farff"), "arffs")
 
