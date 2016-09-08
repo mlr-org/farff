@@ -4,7 +4,7 @@ if (identical(Sys.getenv("TRAVIS"), "true")) {
 
   library(OpenML)
   dchars = listOMLDataSets()
-  dchars2 = subset(dchars, status == "active" & NumberOfInstances < 100 & NumberOfFeatures < 10)
+  dchars2 = subset(dchars, status == "active" & number.of.instances < 100 & number.of.features < 10)
   dids = dchars2$did
 
 
