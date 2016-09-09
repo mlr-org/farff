@@ -1,6 +1,6 @@
 Package: farff
 Title: A Faster ARFF File Reader and Writer
-Description: Reads and writes 'ARFF' files. 'ARFF' (Attribute-Relation File Format) files are like 'CSV' files, with a little bit of added meta information in a header and standardized NA values. They are quite often used for machine learning data sets and were introduced for the 'WEKA' machine learning 'Java' toolbox. See <http://weka.wikispaces.com/ARFF> for further info on 'ARFF' and for <http://www.cs.waikato.ac.nz/ml/weka/> for more info on 'WEKA'. 'farff' gets rid of the 'Java' dependency that 'RWeka' enforces, and it is at least a faster reader (for bigger files). It uses 'readr' as parser back-end for the data section of the 'ARFF' file. Consistency with 'RWeka' is tested on 'Github' and 'Travis CI' with hundreds of 'ARFF' files from 'OpenML'.
+Description: Reads and writes 'ARFF' files. 'ARFF' (Attribute-Relation File Format) files are like 'CSV' files, with a little bit of added meta information in a header and standardized NA values. They are quite often used for machine learning data sets and were introduced for the 'WEKA' machine learning 'Java' toolbox. See <http://weka.wikispaces.com/ARFF> for further info on 'ARFF' and for <http://www.cs.waikato.ac.nz/ml/weka/> for more info on 'WEKA'. 'farff' gets rid of the 'Java' dependency that 'RWeka' enforces, and it is at least a faster reader (for bigger files). It uses 'readr' as parser back-end for the data section of the 'ARFF' file. Consistency with 'RWeka' is tested on 'Github' and 'Travis CI' with hundreds of 'ARFF' files from 'OpenML'. Note that the 'OpenML' package is currently only available from 'Github' at: <https://github.com/openml/openml-r>.
 Authors@R: c(person("Bernd", "Bischl", email = "bernd_bischl@gmx.net",
     role = c("aut", "cre")), person("Jakob", "Bossek", email = "j.bossek@gmail.com", role = c("aut")))
 URL: https://github.com/mlr-org/farff
@@ -20,4 +20,3 @@ LazyData: yes
 ByteCompile: yes
 Version: 1.0
 RoxygenNote: 5.0.1
-Additional_repositories: https://github.com/openml/openml-r
