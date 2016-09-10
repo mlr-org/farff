@@ -56,4 +56,9 @@ in pure R, slow and not fully consistent with the reference implementation in \c
   are currently not supported.}
 }
 }
+\examples{
+path = tempfile()
+writeARFF(iris, path = path)
+d = readARFF(path)
+}
 

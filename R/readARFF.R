@@ -42,6 +42,10 @@
 #' @return [\code{data.frame}].
 #' @export
 #' @useDynLib farff c_dt_preproc c_rd_preproc
+#' @examples
+#' path = tempfile()
+#' writeARFF(iris, path = path)
+#' d = readARFF(path)
 # FIXME: choose readr only with string columns
 readARFF = function(path, data.reader = "readr",
   tmp.file = tempfile(),

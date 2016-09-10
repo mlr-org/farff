@@ -41,4 +41,7 @@ up the write process.
 Logical columns in R are converted to categorical attributes in ARFF
 with levels \dQuote{TRUE} and \dQuote{FALSE}.
 }
+\examples{
+# see readARFF
+}
 

@@ -27,6 +27,8 @@
 #'   Default is to guess it from the object name.
 #' @return Nothing.
 #' @export
+#' @examples
+#' # see readARFF
 writeARFF = function(x, path,
   overwrite = FALSE,
   chunk.size = 1e6,
