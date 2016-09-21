@@ -8,6 +8,9 @@ This is a subproject for better file handling with [mlr](https://github.com/mlr-
 
 ## Installation instructions
 
+Please install the proper CRAN releases in the usual way. 
+If you absolutely have to install from here (yoou should not):
+
 ```splus
 devtools::install_github("mlr-org/farff")
 ```
