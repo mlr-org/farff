@@ -82,7 +82,7 @@ parseHeader = function(path) {
   }
 
   if (!is.na(stri_match_last(first.data.line, regex="^\\s*\\{.*\\}\\s*$")[1L ,1L]))
-    stopf("File seems to be of sparse format. farrf does not support this yet! First @DATA line is:\n%s",
+    stopf("File seems to be of sparse format. farff does not support this yet! First @DATA line is:\n%s",
       first.data.line)
   if (is.null(colnames))
     stop("Missing attribute section.")
