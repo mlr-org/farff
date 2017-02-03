@@ -1,0 +1,8 @@
+@relation check_logicals
+
+@attribute V1 {FALSE}
+@attribute V2 {FALSE,TRUE}
+
+@data
+FALSE,TRUE
+FALSE,FALSE
