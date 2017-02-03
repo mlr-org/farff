@@ -110,7 +110,7 @@ readARFF = function(path, data.reader = "readr",
     if (col.type == "factor") {
       clevs = header$col.levels[[i]]
       # RWEKA parses this to logical
-      if (convert.to.logicals && (identical(clevs, c("TRUE", "FALSE")) || identical(clevs, c("FALSE", "TRUE"))))
+      if (convert.to.logicals && all(clevs %in% c("TRUE", "FALSE")))
         dat[, i] = as.logical(dat[, i])
       else
         dat[, i] = factor(dat[, i], levels = clevs)
