@@ -85,8 +85,11 @@ writeARFF = function(x, path,
   }
   writeLines("@data", handle)
   chunks = BBmisc::chunk(seq(nrow(x)), chunk.size = chunk.size, shuffle = FALSE)
-  # find out which columns to quote, we currently quote strings but not factors
-  quote = which(sapply(colnames(x), function(colname) { is.character(x[[colname]]) }))
+  
+  # find out which columns to quote
+  # we currectly quote strings and factors that are not numbers.
+  quote = which(vapply(x, function(x) !is.numeric(x) && (!is.factor(x) || anyNA(suppressWarnings(as.numeric(levels(x))))), logical(1)))
+  
   for (chunk in chunks) {
     suppressWarnings(write.table(x[chunk, , drop = FALSE], file = handle, quote = quote, row.names = FALSE, col.names = FALSE, na = "?", sep = ","))
   }
