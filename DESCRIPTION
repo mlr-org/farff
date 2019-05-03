@@ -8,7 +8,6 @@ BugReports: https://github.com/mlr-org/farff/issues
 License: BSD_2_clause + file LICENSE
 Encoding: UTF-8
 Imports:
-    BBmisc,
     checkmate (>= 1.8.0),
     stringi,
     readr (>= 1.0.0)
@@ -19,4 +18,4 @@ Suggests:
 LazyData: yes
 ByteCompile: yes
 Version: 1.0
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1

@@ -28,3 +28,16 @@ convertDatetimeFormatISO8601ToPOSIX = function(x) {
 
   x
 }
+
+chunk = function(x, chunk.size) {
+  getNChunks = function(nx, n.chunks, shuffle) {
+    n.chunks = min(n.chunks, nx)
+    sort(seq.int(0L, nx - 1L) %% n.chunks)
+  }
+
+  nx = length(x)
+  chunk.size = asCount(chunk.size)
+  ch = getNChunks(nx, nx %/% chunk.size + (nx %% chunk.size > 0L))
+
+  unname(split(x, ch))
+}

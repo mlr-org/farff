@@ -20,8 +20,7 @@ Should \code{path} be overwritten if it already exists?
 Default is \code{FALSE}.}
 
 \item{chunk.size}{[\code{integer(1)}]\cr
-Large datesets are splitted before writing out to file into chunks of size
-\code{chunk.size}.
+Large datesets are split before writing out to file into chunks of size \code{chunk.size}.
 Default is \code{1e6}.}
 
 \item{relation}{[\code{character(1)}]\cr
@@ -44,4 +43,3 @@ with levels \dQuote{TRUE} and \dQuote{FALSE}.
 \examples{
 # see readARFF
 }
-

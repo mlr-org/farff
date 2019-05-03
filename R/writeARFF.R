@@ -19,8 +19,7 @@
 #'   Should \code{path} be overwritten if it already exists?
 #'   Default is \code{FALSE}.
 #' @param chunk.size [\code{integer(1)}]\cr
-#'   Large datesets are splitted before writing out to file into chunks of size
-#'   \code{chunk.size}.
+#'   Large datesets are split before writing out to file into chunks of size \code{chunk.size}.
 #'   Default is \code{1e6}.
 #' @param relation [\code{character(1)}]\cr
 #'   Name of the relation in the ARFF file.

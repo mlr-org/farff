@@ -28,5 +28,5 @@ test_that("writeARFF works as expected", {
 
   # delete colnames and try to write
   colnames(dat) = NULL
-  expect_error(writeARFF(dat, outfile, overwrite = TRUE), "Columns must be named")
+  expect_error(writeARFF(dat, outfile, overwrite = TRUE))
 })

@@ -61,4 +61,3 @@ path = tempfile()
 writeARFF(iris, path = path)
 d = readARFF(path)
 }
-
