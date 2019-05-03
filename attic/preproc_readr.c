@@ -109,7 +109,3 @@ SEXP c_rd_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
   fclose(handle_out);
   return R_NilValue;
 }
-
-
-
-

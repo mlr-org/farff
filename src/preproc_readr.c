@@ -79,7 +79,7 @@ SEXP c_rd_preproc(SEXP s_path_in, SEXP s_path_out, SEXP s_data_sect_index) {
 
   /* FIXME: can we skip these lines faster? */
   for (int i = 0; i<data_sect_index; i++) {
-    fgets(line_buf_1, sizeof line_buf_1, handle_in);
+    char * tmp = fgets(line_buf_1, sizeof line_buf_1, handle_in);
   }
 
   while (fgets(line_buf_1, sizeof line_buf_1, handle_in)) {
