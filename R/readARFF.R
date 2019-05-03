@@ -76,9 +76,12 @@ readARFF = function(path, data.reader = "readr",
   on.exit({unlink(tmp.file)})
 
   # preprocess data (depends on data reader)
-  preproc.fun = if (data.reader == "data.table") c_dt_preproc else c_rd_preproc
   requirePackages(data.reader)
-  st2 = g(.Call(preproc.fun, path, tmp.file, as.integer(header$line.counter)))
+  if (data.reader == "data.table") {
+    st2 = g(.Call(c_dt_preproc, path, tmp.file, as.integer(header$line.counter), PACKAGE = "farff"))
+  } else {
+    st2 = g(.Call(c_rd_preproc, path, tmp.file, as.integer(header$line.counter), PACKAGE = "farff"))
+  }
 
   col.types = stri_replace_all(header$col.types, fixed = "factor", "character")
 
