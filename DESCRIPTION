@@ -8,6 +8,7 @@ BugReports: https://github.com/mlr-org/farff/issues
 License: BSD_2_clause + file LICENSE
 Encoding: UTF-8
 Imports:
+    BBmisc,
     checkmate (>= 1.8.0),
     stringi,
     readr (>= 1.0.0)
