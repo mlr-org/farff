@@ -1,25 +1,4 @@
-language: r
-sudo: false
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-cache:
-  packages: true
-
-env:
-  global:
-  - secure: uKNf/tQg+EA2TL36ZWp2l6faqDGwebilTHDqRnTBda/GUM+ZFyVoSKbi0ua191x+gEXc1RtJ3JGruaa2Q3xg+YhLajUGUHN4Xd+U90sB4zvj+0RcdL/pUkvrfuH6DzY8gLgWd9QWN318NS/lXJHSY7IBB7Yo4rUfF/ubjzqWYUtI6soUwdCXanWHgO3ySvC9JWogCF6K15wngEb/z9y8eUKqhsa6qbJ2tb2PYdp2YHLt2IdF8sfhLoG/rkAJJ+Elb5JDDVabeIarwh+sai61oewP1s4QJNav8EAsOnx+6U05576/HFNHXweyv8Dtrtf4M9sgjnweHPVJuAxZXjm1qSHOrhBABF8QzJgU/jotb87X8sJ40p+7k0OsBwuLB6yd6yEtCYgWJmhGpg5pMP6C2RfVHDNGv6scQ64N6ZrjntIBlW4UG6roEh4Vy8O0Ui0R2S8bm1W9z8s0JoNtWVVLfd7zcs3vlCd8xw7u4fLAQcpi6JwKB4rjysPNiLmjSzoYxEU5/BrHpKQLGU23czZrUcmGtALWJjtmsihRBg0lSWnitCrSxVU+bAL1KYw3RXyPUWCRJ3JiBqU1M8yXescDpOTG1K+WFzDe44fzetxE/loh77sgOTGhJtAQtoW5KWEOEQ+bF9R95c6cv6cCAxuUjSyngd4YTVcdHz2T17/THbc=
-  - secure: "X73E8neZklHIZixQ36X/Xdj2Vupi5xaEBto+Snn6boiXJxJm6htq7bjpG6w3+/C0+PtDCKuOgB5QFlZ3jJ+tZz7rDX8HHQ59o0C4LBV0HGi6v+EKpDCm/M1SXw+Qb1q/KHSOfGwNS5n2t5pMfXwsGADhgTgipwNiKPxzKv4Rf6EjWfDCOdraeX57m/2a/l+clAD8S6dMh9/U4NNHzknidVOA8uWxbG2tvHHeBC2P6VjKpyjKZSSdbWEY3z4QCBKDnujWg4QSxxiFzKZLZy9A5210rULzyEwf2vZ63Xs2zxBwQZfUNoqo4hoVJNLEv2TmuYJCLIw2D+Ul2rbj45gwCLgGetMku5v7I9x/6wf5cGjLuOohAeeeyNYTvqQEfZx+BLOHAmnsj7Sy9D/lb1BmSInItdY7l0sYyL3e2Ibb8OO72LMO8c/tOBV1q1KtJwBQ30dVc/awtOKAx4dh63Fv1b9FVOV/niB1LIHqhHFBwKa6smCZlwUTXCQhSojT1a571HIje1W7bGufJYoZDn8QFRX09bzNU6eiXcrG+f54nPK0Yd6yTaGyqChNcvYxWjn2N9m9eiOeY0f3jPZ4EE4im6+qGxHN9dqv5z/Gfg3oPAPDB4BCz4I4peejoxgeAMp9TFIvGYmADPcTVg8Hr870NBP9tzJTF97W2xvXFi/3iF0="
-
-r_github_packages:
-    - jimhester/covr
-    - OpenML/openml-r
-
-after_success:
-  - Rscript -e 'library(covr);coveralls()'
-
-notifications:
-  email:
-    recipients:
-        - bernd_bischl@gmx.net
-        - j.bossek@gmail.com
-    on_success: change
-    on_failure: always
+language: R
+cache: packages

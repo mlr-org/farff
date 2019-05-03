@@ -4,7 +4,6 @@
 ^.*\.swp$
 .gitignore
 .Rproj.user
-.travis.yml
 README.md
 appveyor
 ^.editorconfig$
@@ -14,3 +13,4 @@ appveyor
 test.R
 test2.R
 attic
+^\.travis\.yml$
