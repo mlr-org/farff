@@ -1,5 +1,3 @@
-context("parseFactorLevels")
-
 test_that("parseFactorLevels", {
   expect_equal(parseFactorLevels("{a, b}"), c("a", "b"))
   expect_equal(parseFactorLevels("{a, 'c'}"), c("a", "c"))

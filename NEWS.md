@@ -1,5 +1,5 @@
 # farff 1.1.1:
-* Fixed unit tests.
+* Remove unit tests.
 
 # farff 1.1:
 * Fixed segmentation fault in readARFF caused by a leading tilde in the path to the arff file

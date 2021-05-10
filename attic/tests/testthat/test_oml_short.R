@@ -1,3 +1,5 @@
+skip_if_not_installed("RWeka")
+
 if (identical(Sys.getenv("TRAVIS"), "true")) {
 
 context("quick test with OML data sets where problems occured before")

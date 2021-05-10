@@ -39,7 +39,6 @@ Imports:
     stringi
 Suggests:
     OpenML,
-    RWeka,
     testthat
 ByteCompile: yes
 Encoding: UTF-8

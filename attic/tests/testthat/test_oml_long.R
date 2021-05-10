@@ -1,3 +1,5 @@
+skip_if_not_installed("RWeka")
+
 if (identical(Sys.getenv("TRAVIS"), "true")) {
 
   context("long test with many OML data sets")
