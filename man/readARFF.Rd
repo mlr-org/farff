@@ -4,8 +4,14 @@
 \alias{readARFF}
 \title{Read ARFF file into data.frame.}
 \usage{
-readARFF(path, data.reader = "readr", tmp.file = tempfile(),
-  convert.to.logicals = TRUE, show.info = TRUE, ...)
+readARFF(
+  path,
+  data.reader = "readr",
+  tmp.file = tempfile(),
+  convert.to.logicals = TRUE,
+  show.info = TRUE,
+  ...
+)
 }
 \arguments{
 \item{path}{[\code{character(1)}]\cr

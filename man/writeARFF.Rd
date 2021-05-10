@@ -4,8 +4,13 @@
 \alias{writeARFF}
 \title{Write ARFF data.frame to ARFF file.}
 \usage{
-writeARFF(x, path, overwrite = FALSE, chunk.size = 1e+06,
-  relation = deparse(substitute(x)))
+writeARFF(
+  x,
+  path,
+  overwrite = FALSE,
+  chunk.size = 1e+06,
+  relation = deparse(substitute(x))
+)
 }
 \arguments{
 \item{x}{[\code{data.frame}]\cr

@@ -1,6 +1,7 @@
 context("quick test with small arffs")
 
 test_that("quick test with small arffs", {
+  skip_on_cran()
   for (dreader in c("readr")) {
   # for (dreader in c("readr", "data.table")) {
     compareRWeka(INST_ARFF_DIR, "iris.arff", data.reader = dreader)

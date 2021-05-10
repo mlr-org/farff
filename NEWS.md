@@ -1,3 +1,6 @@
+# farff 1.1.1:
+* Fixed unit tests.
+
 # farff 1.1:
 * Fixed segmentation fault in readARFF caused by a leading tilde in the path to the arff file
 * Increased internal buffer sizes used to parse the header of arff files
